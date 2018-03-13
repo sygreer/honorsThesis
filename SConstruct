@@ -1,7 +1,7 @@
 from rsf.book import *
 
 #chapters = Split('chapter-intro chapter-theory chapter-example chapter-conclusion')
-chapters = Split('chapter-intro')
+chapters = Split('chapter-intro chapter-merge')
 
 Thesis(chapters,
        univ='UT',
