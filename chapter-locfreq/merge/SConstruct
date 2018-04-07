@@ -1,0 +1,78 @@
+from rsf.proj import *
+from radius import radius
+
+# Initial figures
+Result('legacy','grey title="Legacy"')
+Result('hires-agc','hires','agc rect1=2000 rect2=5 | grey title="High-resolution"')
+
+Flow('legacy-spec','legacy','spectra all=y')
+Result('nspectra-orig','high-spec legacy-spec',
+     '''cat axis=2 ${SOURCES[1]} | 
+     scale axis=1 | window max1=180 |
+     graph title="Normalized Spectra" label2="Amplitude" unit2=""''')
+
+# Balance frequency
+flol=40
+corrections = 5
+Flow('legacyfilt','legacy','bandpass flo=%d '%(flol))
+radius('hires','legacyfilt', corrections, [0.13,0.2,0.3,0.5,0.5], bias=0, clip=90, rect1=80, rect2=16, maxval=90 )
+
+# # Balance amplitude
+# Flow('hires-balanced','high-smooth%i legacyfilt'%corrections,'abalance other=${SOURCES[1]} rect1=80 rect2=16')
+# Result('hires-balanced','grey title="Hires balanced"')
+# 
+# # Balance amplitude
+# Flow('hires-despike','hires-balanced','despike2 wide1=2')
+# Result('hires-despike','grey title="Hires Despike"')
+# 
+# # Select one trace
+# trace = 3.2452e8
+# 
+# Flow('hiresorig-balanced','hires legacy','abalance other=${SOURCES[1]} rect1=80 rect2=16')
+# Flow('hiresorig-despike','hiresorig-balanced','despike2 wide1=2')
+# Flow('legacy-trace','legacy','window n2=1 min2=%d'%trace)
+# Flow('hires-trace','hiresorig-despike','window n2=1 min2=%d'%trace)
+# Flow('diff-trace','hires-sb-trace legacyfilt-trace','add ${SOURCES[1]} scale=-1,1')
+# Result('diff-trace','hires-trace legacy-trace diff-trace',
+#        'cat axis=2 ${SOURCES[1:3]} | dots gaineach=n labels=Hires:Legacy:Difference yreverse=y')
+# 
+# Flow('hires-sb-trace','hires-despike','window n2=1 min2=%d'%trace)
+# Flow('legacyfilt-trace','legacyfilt','window n2=1 min2=%d'%trace)
+# Flow('diff-filt-trace','hires-sb-trace legacyfilt-trace','add ${SOURCES[1]} scale=-1,1')
+# Result('diff-filt-trace','hires-sb-trace legacyfilt-trace diff-trace',
+#        'cat axis=2 ${SOURCES[1:3]} | dots gaineach=n labels=Hires:Legacy:Difference yreverse=y')
+# 
+# Flow('warpscan','hires-sb-trace legacyfilt-trace',
+#      '''
+#      warpscan shift=y ng=101 g0=-0.05 dg=0.001 
+#      other=${SOURCES[1]} rect1=50
+#      ''')
+# 
+# Flow('warppick','warpscan',
+#      'scale axis=2 | pick rect1=10 vel0=-0.02 an=0.1')
+# 
+# Plot('warpscan',
+#      '''
+#      grey allpos=y color=j title="Shift Scan" 
+#      label2=Shift unit2=s
+#      ''')
+# 
+# # This is what was removed
+# Plot('warppick',
+#      ''' 
+#      graph plotfat=3 plotcol=7 wanttitle=n wantaxis=n
+#      min2=-0.05 max2=0.05 pad=n yreverse=y transp=y
+#      ''')
+# 
+# Result('warpscan','warpscan warppick','Overlay')
+# 
+# # Apply picked shift
+# Flow('warp','hires-sb-trace legacyfilt-trace warppick',
+#      'warp1 other=${SOURCES[1]} warpin=${SOURCES[2]} nliter=0')
+# 
+# Flow('warp-diff','legacyfilt-trace warp','add ${SOURCES[1]} scale=1,-1')
+# 
+# Result('wtraces','legacyfilt-trace warp warp-diff',
+#        'cat axis=2 ${SOURCES[1:3]} | dots gaineach=n labels=Legacy:Warped:Difference yreverse=y')
+
+End()

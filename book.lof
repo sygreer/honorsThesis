@@ -1,2 +1,17 @@
 \addvspace {10pt}
-\addvspace {10pt}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Initial legacy (a) and high-resolution (b) images. These images show the same subsurface geology, but look remarkably different as the high-resolution image has distinctly higher frequency content than the legacy image.}}{6}{figure.1.1}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{6}{figure.1.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{6}{figure.1.1}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces The smoothing radius, which is a function of time and space, this method produces after 5 iterations. This represents the number of samples in time that the high-resolution image needs to be smoothed over in a triangle weight to balance local frequency content with the legacy image.}}{7}{figure.1.2}
+\contentsline {figure}{\numberline {1.3}{\ignorespaces Spectral content of the legacy (red) and high-resolution (blue) images before (a) and after (b) spectral balancing.}}{9}{figure.1.3}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{9}{figure.1.3}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{9}{figure.1.3}
+\contentsline {figure}{\numberline {1.4}{\ignorespaces Difference in local frequencies (residual) between the legacy and high-resolution images before (a) and after (b) the 5th iteration of frequency balancing.}}{11}{figure.1.4}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{11}{figure.1.4}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{11}{figure.1.4}
+\contentsline {figure}{\numberline {1.5}{\ignorespaces Initial PP (a) and SS (b) images.}}{13}{figure.1.5}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{13}{figure.1.5}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{13}{figure.1.5}
+\contentsline {figure}{\numberline {1.6}{\ignorespaces Interleaved PP and warped SS traces before (a) and after (b) frequency balancing and residual registration. After registration, the signal content between the two initial images is more aligned; for example, the reflections around 0.3 and 0.6 s. This indicates a successful registration.}}{14}{figure.1.6}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{14}{figure.1.6}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{14}{figure.1.6}

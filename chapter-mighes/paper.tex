@@ -1,0 +1,425 @@
+\title{Migration deconvolution}
+\author{Sarah Yvonne Greer}
+\maketitle
+
+%\title{Migration deconvolution using non-stationary matching}
+%\title{Approximating the inverse Hessian to enhance migration using non-stationary matching operators}
+%\title{Improving migration resolution by approximating the Hessian using non-stationary matching operators}
+%\title{Improving migration resolution by approximating the Hessian using non-stationary amplitude and frequency matching operators}
+%\title{Improving migration resolution using non-stationary amplitude and frequency matching operators}
+%\title{Improving migration resolution by approximating the least-squares Hessian using non-stationary amplitude and frequency matching}
+%\title{Approximating the inverse Hessian to enhance migration using linear non-stationary matching operators}
+%\author{Sarah Greer*, Zhiguang Xue, and Sergey Fomel, The University of Texas at Austin}
+\newcommand*{\tran}{^{\mkern-1.5mu\mathsf{T}}}
+\maketitle
+%\inputdir{sigsbee}
+\inputdir{sigsbee2}
+\begin{abstract}
+    We propose using two non-stationary operators to represent the amplitude and frequency variations in the least-squares Hessian to account for the principal differences between conventional and least-squares migrated images.
+    The calculation and application of these operators are computationally inexpensive when compared to one iteration of least-squares migration,
+    and it increases the resolution and amplitude fidelity of the migrated image.
+%    When applying these transformation to a conventionally migrated image, it improves the image resolution.
+    %We propose an approach of approximating the inverse Hessian operator in application to migration deconvolution. 
+    %Since the primary differences between conventionally migrated images and least-squares migrated images amount to amplitude and frequency variations, we use two separate non-stationary operators to represent the Hessian---one to account for amplitude variations, and the other to account for frequency variations. 
+    %Successful results were achieved on an application of reverse-time migration to the Sigsbee synthetic data set.
+    Successful results are achieved on an application of reverse-time migration to the Sigsbee synthetic data set.
+\end{abstract}
+
+\section{Introduction}
+%However, the process may be computationally expensive as it typically involves multiple iterations of forward modeling and remigrating the data. 
+%Least-squares migration \cite[]{lsm} \ldots
+Least-squares migration can produce an accurate migrated seismic image.
+However, the process may be computationally expensive as it is typically performed in an iterative manner, where each iteration involves forward modeling and migration. 
+%However, the process may be computationally expensive as it is typically performed in an iterative manner, where each iteration involves forward modeling, calculating the residual misfit, performing a conventional migration, and updating the model. 
+%At the cost of approximately one iteration of least-squares migration, 
+Although conventional seismic migration is less computationally expensive than least-squares migration, it generally contains migration artifacts affecting amplitude fidelity and resolution \cite[]{lsamp,pwlsrtm}.
+%These artifacts are due to the fact that standard migration applies only a single adjoint operation \cite[]{pvi}.
+%Least-squares migration can help alleviate 
+This may be attributed to the fact that, while least-squares migration inverts for subsurface reflectivity by 
+finding the least-squares model solution,
+standard migration amounts to applying a single adjoint operation \cite[]{pvi}. 
+%Conventionally migrated seismic images generally contain migration artifacts affecting amplitude fidelity and resolution \cite[]{lsamp,pwlsrtm}.
+%A standard way to alleviate these artifacts 
+%is an advanced way of producing an accurate image of the subsurface \cite[]{lsm}.
+%However, compared to least-squares migrated images, conventionally migrated images generally suffer for migration artifacts affecting amplitude fidelity and resolution \cite[]{lsamp,pwlsrtm}.
+%Conventional migration is not , as such, 
+%conventionally migrated images generally suffer from migration artifacts affecting amplitude fidelity and resolution. 
+%However, compared to least-squares migrated images, conventionally migrated images generally suffer for migration artifacts affecting amplitude fidelity and resolution \cite[]{lsamp,pwlsrtm}.
+%solving the least-squares normal equations, 
+%While this can be a good approximation to the inverse, and as such, is not a true inverse operation. 
+
+Various methods have attempted to correct these differences by finding and applying an approximation to the inverse Hessian operator, $\mathbf{H}^{-1} = \left (\mathbf{L}\tran\mathbf{L} \right )^{-1}$, to a conventional migrated image.
+%Migration deconvolution attempts to correct these differences by finding and applying an approximation to the inverse Hessian operator, $\mathbf{H}^{-1} = \left (\mathbf{L}\tran\mathbf{L} \right )^{-1}$, to a conventional migrated image. 
+Here, $\mathbf{L}$ is a standard forward-modeling operator, and $\mathbf{L}\tran$ is its adjoint---the migration operator.
+These methods usually take the form of two approaches---for preconditioning before least-squares migration and as a single operation to improve accuracy of a conventionally migrated image.
+%This filter approximates the inverse Hessian operator, and can be approximated by solving a data matching problem between two conventionally migrated images. 
+%Migration deconvolution \cite[]{poststack,prestack}
+Previously, this has been done by 
+migration deconvolution \cite[]{poststack,prestack},
+%stochastscally approximating the diagonal of $\mathbf{H}^{-1}$ to account for amplitude effects \cite[]{diagamp}, 
+approximating the diagonal of $\mathbf{H}^{-1}$ to account for amplitude effects \cite[]{amp,diagamp},
+and by finding and applying a bank of non-stationary matching filters \cite[]{imop,rtmmf} or deblurring filters \cite[]{debfilt} to a conventionally migrated image.
+%This has traditionally been done using a sliding window approach, where windowed regions and partial overlap regions are specified, and different operations are specified in each region \cite[]{seiinv}.
+This traditionally is done using a sliding window approach, where windowed regions and partial overlap regions are specified, and different matching filters are specified in each region \cite[]{seiinv}.
+
+In this paper, we take a different approach. 
+We note that the two primary differences between least squares migrated images and conventional migrated images are amplitude and frequency variations \cite[]{Hou2015, Hou2016}. 
+%Because of this, we choose to approximate the  
+Here, we treat this as a data matching problem between two conventionally migrated images, and find separate operations to account for both amplitude and frequency variations.
+%However, we propose using two separate non-stationary operators---one to account for amplitude variations, and the other to account for frequency variations. 
+
+%This has advantages over previous methods as, instead of using a sliding window approach, we rely on local seismic attributes to measure and apply amplitude and frequency balancing operations \cite[]{attr}.
+This approach enables us to rely on local seismic attributes to measure and apply amplitude and frequency balancing operations instead of using a sliding window approach \cite[]{attr}.
+This allows for the smooth estimation and application of these matching operations instead of applying them in discrete windows.
+%of local seismic attributes, and for 
+%In the past, 
+Since the operations for balancing amplitude and frequency content are calculated and applied separately from each another, the effect of each 
+%transformation 
+operation
+can be adjusted independently, which is another advantage of the proposed method.
+To test the proposed approach, we apply this method to an example of reverse-time migration on the Sigsbee synthetic data set \cite[]{sigsbee}. 
+%Least squares migration is more computationally expensive than conventional migration, but it produces a more accurate image of the subsurface---conventional migrated images generally 
+%suffer from migration artifacts affecting amplitude fidelity and resolution \cite[]{lsamp,pwlsrtm}.
+%exhibit less correct amplitude and frequency content. 
+%applying a filter to a conventional migrated image to produce a more accurate image with less computational cost than least-squares migration. 
+%Previously, this has been done using non-stationary, or spatially and temporally variant, matching filters in a sliding-window approach. 
+
+
+%\multiplot{3}{mod,image0,migdec-shap}{width=1.0\columnwidth}{The Sigsbee model reflectivity (a), the conventionally migrated image (b), and the corrected migrated image (c).}
+%\multiplot{4}{mod,vel-migration,image0,image1}{width=1.0\columnwidth}{The Sigsbee model reflectivity (a), the conventionally migrated image (b), and the corrected migrated image (c).}
+%\plot{error}{width=1\columnwidth}{Convergence of conventional least-squares migration (blue) and using the migration-deconvolution image as a starting moel (red).}
+%Once finding the forward operation,
+\section{Theory}
+The goal of least-squares migration is to find the image, $\hat{\mathbf{r}}$, that minimizes
+\begin{equation}
+p(\hat{\mathbf{r}}) = \frac{1}{2}\left \lVert \mathbf{\mathbf{d} - L\hat{r}} \right \rVert _2^2\;,
+\end{equation}
+where $\mathbf{L}$ is the forward modeling operator, representing seismic wave propagation through the subsurface, and $\mathbf{d}$ is the acquired seismic data.
+This can be solved by the least-squares formulation to find $\hat{\mathbf{r}}$:
+\begin{equation}
+        \hat{\mathbf{r}} = \left ( \mathbf{L}\tran\mathbf{L}\right )^{-1}\mathbf{L}\tran\mathbf{d}\;,
+        \label{eq:ls}
+\end{equation}
+where the migration operator, $\mathbf{L}\tran$, is adjoint to the forward modeling operator and is typically sparse, 
+%where $\mathbf{L}\tran$ is the migration operator, 
+and $\left ( \mathbf{L}\tran \mathbf{L} \right )^{-1}$ is the inverse Hessian operator.
+%Equation (\ref{eq:ls}) is usually solved iteratively, where each iteration costs %by multiple iteration of forward modeling
+%where each iteration involves 
+%On the other hand, conventional migration
+Equation (\ref{eq:ls}) is usually solved iteratively, typically requiring multiple iterations of forward modeling and remigrating the seismic image \cite[]{wem,xue16}. 
+Conventional migration is less computationally expensive:
+\begin{equation}
+        \mathbf{m}_0 = \mathbf{L}\tran\mathbf{d}.
+        \label{eq:mod}
+\end{equation}
+%where the migration operator, $\mathbf{L}\tran$, is adjoint to the forward modeling operator. 
+However, conventionally migrated images generally exhibit less correct amplitude and frequency content than least-squares migrated images \cite[]{dutta14}. 
+By combining equations (\ref{eq:ls}) and (\ref{eq:mod}), it is evident that
+\begin{equation}
+        \hat{\mathbf{r}} = \left ( \mathbf{L}\tran\mathbf{L}\right )^{-1}\mathbf{m}_{0} \;,
+\end{equation}
+%so $\mathbf{m}_0$ is an $\mathbf{L}\tran\mathbf{L}$ blurred version of $\hat{\mathbf{r}}$, and $\hat{\mathbf{r}}$ can be recovered from $\mathbf{m}_0$ by a good approximation of $\left ( \mathbf{L}\tran\mathbf{L}\right) ^{-1}$.
+so $\mathbf{m}_0$ is a distorted version of $\hat{\mathbf{r}}$, and $\hat{\mathbf{r}}$ can be recovered from $\mathbf{m}_0$ by finding a good approximation of $\left ( \mathbf{L}\tran\mathbf{L}\right) ^{-1}$.
+
+%The least squares image, $\hat{\mathbf{r}}$
+
+%Here the forward modeling operator, and subsequently the migration operator, $\mathbf{L}\tran$, depends on the type of migration; RTM vs Kirchhoff\ldots
+
+%We can represent acquired seismic data, $\mathbf{d}$, as a forward-modeled version of the Earth's true reflectivity, 
+%\begin{equation}
+%        \mathbf{d} = \mathbf{L}\mathbf{r},
+%\end{equation}
+%where $\mathbf{r}$ is the Earth's reflectivity and $\mathbf{L}$ is the forward modeling operator CITE. 
+%Least-squares migration can produce a close approximation to the Earth's reflectivity by finding the least-squares solution,
+%\begin{equation}
+%        \hat{\mathbf{r}} = \left ( \mathbf{L}\tran\mathbf{L}\right )^{-1}\mathbf{L}\tran\mathbf{d},
+%        \label{eq:ls}
+%\end{equation}
+%but it can be computationally expensive as it typically requires multiple iterations of forward modeling and remigrating the seismic image CITE. 
+%Conventional migration is less computationally expensive:
+%\begin{equation}
+%        \mathbf{m}_0 = \mathbf{L}\tran\mathbf{d},
+%        \label{eq:mod}
+%\end{equation}
+%where the migration operator, $\mathbf{L}\tran$, is adjoint to the forward modeling operator. 
+%However, conventionally migrated images generally exhibit less correct amplitude and frequency content than least-squares migrated images CITE. 
+%By combining equations \ref{eq:ls} and \ref{eq:mod}, it is evident that
+%\begin{equation}
+%        \hat{\mathbf{r}} = \left ( \mathbf{L}\tran\mathbf{L}\right )^{-1}\mathbf{m}_{1},
+%\end{equation}
+%so $\mathbf{m}_0$ is an $\mathbf{L}\tran\mathbf{L}$ blurred version of $\hat{\mathbf{r}}$, and $\hat{\mathbf{r}}$ can be recovered from $\mathbf{m}_0$ by a good approximation of $\left ( \mathbf{L}\tran\mathbf{L}\right) ^{-1}$.
+%
+%In order to find $\left ( \mathbf{L}\tran\mathbf{L}\right) ^{-1}$, we follow the modeling and remigration process of CITE. We begin by forward modeling the migrated image, $\mathbf{m}_9$:
+%\begin{equation}
+%        \mathbf{d}_2 = \mathbf{L}\mathbf{m}_0.
+%\end{equation}
+%We then remigrate $\mathbf{d}_2$:
+%\begin{equation}
+%        \mathbf{m}_1 = \mathbf{L}\tran\mathbf{d}_2 = \left ( \mathbf{L}\tran\mathbf{L}\right ) \mathbf{m}_0,
+%\end{equation}
+%and then find the operator, $\left ( \mathbf{L} \tran \mathbf{L} \right )^{-1}$, that satisfies
+%\begin{equation}
+%        \mathbf{m}_0 = \left ( \mathbf{L}\tran\mathbf{L} \right ) ^{-1} \mathbf{m}_1.
+%\end{equation}
+%This can be interpreted as a data matching problem between $\mathbf{m}_0$ and $\mathbf{m}_1$.
+%
+
+\section{Method}
+%Here, we follow the forward-modeling and remigration approach of 
+
+In order to approximate $\left ( \mathbf{L}\tran\mathbf{L}\right) ^{-1}$, we follow the modeling and remigration process of \cite{imop}. 
+We begin by forward modeling the migrated image, $\mathbf{m}_0$:
+\begin{equation}
+        \mathbf{d}_1 = \mathbf{L}\mathbf{m}_0 \;.
+\end{equation}
+We then remigrate $\mathbf{d}_1$:
+\begin{equation}
+        \mathbf{m}_1 = \mathbf{L}\tran\mathbf{d}_1 = \left ( \mathbf{L}\tran\mathbf{L}\right ) \mathbf{m}_0 \; ,
+\end{equation}
+and then find the operator, $\left ( \mathbf{L} \tran \mathbf{L} \right )^{-1}$, that satisfies
+\begin{equation}
+        \mathbf{m}_0 = \left ( \mathbf{L}\tran\mathbf{L} \right ) ^{-1} \mathbf{m}_1 \;.
+\end{equation}
+%The inverse Hessian operator that must be applied to $\mathbf{m}_0$ to correct it closer to the least-squares migrated image, $\hat{\mathbf{r}}$, therefore, can be calculated by finding the transformation $\mathbf{H}^{-1}$, that maps $\mathbf{m}_1$ to $\mathbf{m}_0$.
+%Therefore, the inverse Hessian operator, $\mathbf{H}^{-1} = \left ( \mathbf{L} \tran \mathbf{L} \right )^{-1}$, that must be applied to $\mathbf{m}_0$ to get $\hat{\mathbf{r}}$ can be calculated by finding the transformation $\mathbf{H}^{-1}$, that maps $\mathbf{m}_1$ to $\mathbf{m}_0$.
+Therefore, the inverse Hessian operator, $\mathbf{H}^{-1} = \left ( \mathbf{L} \tran \mathbf{L} \right )^{-1}$, that must be applied to $\mathbf{m}_0$ to get $\hat{\mathbf{r}}$ can be calculated by first finding the transformation, $\mathbf{H}$, that maps $\mathbf{m}_0$ to $\mathbf{m}_1$, and then inverting it.
+This can be interpreted as a data matching problem between $\mathbf{m}_1$ and $\mathbf{m}_0$.
+%This can be interpreted as a data matching problem between $\mathbf{m}_0$ and $\mathbf{m}_1$.
+
+%\multiplot{3}{mod,image0,migdec-shap}{width=1.0\columnwidth}{The Sigsbee model reflectivity (a), the conventionally migrated image (b), and the corrected migrated image (c).}
+%\multiplot{4}{mod,vel-migration,image0,image1}{width=1.0\columnwidth}{The Sigsbee model reflectivity (a), migration migration velocity model (b), the first migrated image, $\mathbf{m}_0$ (c), and the second migrated image, $\mathbf{m}_1$ (d).}
+%\multiplot{4}{mod,vel-migration,image0,image1}{width=0.98\columnwidth}{The Sigsbee model reflectivity (a), migration velocity model (b), the first migrated image, $\mathbf{m}_0$ (c), and the second migrated image, $\mathbf{m}_1$ (d).}
+%Typically, the differences between least-squares migrated images and conventionally migrated images amount to only amplitude and frequency changes, 
+    Since the primary differences between conventionally migrated images and least-squares migrated images amount to amplitude and frequency variations, we use two separate non-stationary operators to represent the forward Hessian---one to account for amplitude variations, and the other to account for frequency variations. 
+    Therefore, our approximation of $\mathbf{H}$ can be calculated from some application of a non-stationary amplitude balancing operator, $\mathbf{A}$, and a non-stationary frequency balancing operator, $\mathbf{S}$.
+    %We first calculate the forward Hessian since the forward frequency balancing operation, $\mathbf{S}$, is well defined. 
+    We first calculate the forward Hessian since the forward frequency balancing operation, $\mathbf{S}$, is well defined and simple to calculate. 
+    We then invert our approximation to the Hessian and apply it to $\mathbf{m}_0$ to correct the amplitude and frequency content of the migrated image.
+
+
+\subsection{Amplitude operator}
+First, we choose to find an amplitude balancing operation that, when applied to $\mathbf{m}_0$, balances the amplitudes of $\mathbf{m}_0$ with respect to $\mathbf{m}_1$. 
+%This amplitude balancing operator, $\mathbf{A}$, only has terms across the diagnonal, and is applied similarly to a matrix-vector operation trace-by-trace throughout the image.
+%This amplitude balancing operator, $\mathbf{A}$, only has terms across the diagnonal, and is applied similarly to a matrix-vector operation trace-by-trace throughout the image.
+This operation can be equated to a trace-by-trace multiplication of a diagonal matrix to each trace, where the matrix changes for every trace.
+%The matrix $\mathbf{A}$ changes 
+We estimate it by first calculating the amplitude envelope of the traces in $\mathbf{m}_0$ and $\mathbf{m}_1$, and then smoothly dividing them.
+The corresponding diagonal weighting operator, $\mathbf{A}$, can be applied such that $\mathbf{m}_1 \approx \mathbf{A}\mathbf{m}_0$ to balance the amplitudes of each trace.
+%to find the diagonal weighting operator 
+%to balance the amplitudes of each trace.
+%that balances the amplitudes of each trace of $\mathbf{m}_0$ to match with $\mathbf{m}_1$.
+%This is a linear diagonal weighting operator
+%This linear operator only has elements across the diagonal terms, so it is trivial to find the inverse operator. 
+%Therefore, this operator $\mathbf{S}$, when applied to $\mathbf{m}_1$ as $\mathbf{m}_0 \approx \mathbf{S}\mathbf{m}_1$, .
+%Therefore, the operator $\mathbf{S}$, when applied to $\mathbf{m}_1$ as $\mathbf{m}_0 \approx \mathbf{S}\mathbf{m}_1$, .
+Since this is a linear operation that only has diagonal elements, it is trivial to find the inverse operator, $\mathbf{A}^{-1}$. 
+
+%\multiplot{2}{a0,a1}{width=1.0\columnwidth}{The forward amplitude balancing weights, $\mathbf{A}_0$ (a) and $\mathbf{A}_1$ (b).}
+%\plot{rect10}{width=1.0\columnwidth}{The smoothing radius, which represents the number of samples in both spatial dimentions, that $\mathbf{m}_0$ must be smoothed over in a pyramid weight to balance local frequency content with $\mathbf{m}_1$. This represents the forward smoothing operation, $\mathbf{S}$.}
+
+\subsection{Frequency operator}
+In addition to amplitude corrections, we also attempt to account for the decrease in resolution of a conventional migrated image compared to its corresponding least-squares migrated image. 
+This loss in resolution can be equated to the fact that $\mathbf{L}\tran\mathbf{L}$ acts as a blurring operator, where the conventional migrated image is a blurred version of the ideal least-squares migrated image \cite[]{poststack}. %where each individual value 
+We choose to approximate this blurring using non-stationary triangle smoothing.
+
+
+%This means that the 
+We begin by first calculating the local frequency of the two initial images \cite[]{attr}. 
+Local frequency is a temporally and spatially varying frequency attribute that smoothly varies across the image without windows.
+Our goal is to find a transformation that we can apply to $\mathbf{m}_0$ that matches the local frequency content with $\mathbf{m}_1$. 
+To do this, we propose using non-stationary triangle smoothing. 
+%This approach involves finding and applying a non-stationary smoothing radius, which is the amount of samples, in time, that $\mathbf{m}_0$ will be averaged over in a triangle weight, to balance local frequency content with $\mathbf{m}_1$. 
+This approach involves finding and applying a non-stationary smoothing operator, which is the amount of samples, in both dimensions, that $\mathbf{m}_0$ will be averaged over in a triangle weight, to balance the local frequency content with $\mathbf{m}_1$. 
+
+We find the smoothing radius iteratively using the method of \cite{locfreq}, with a modification that allows the smoothing radius to be calculated in both spatial directions. 
+Essentially, this is found by choosing an initial guess of a smoothing radius, $\mathbf{R}^{(0)}$, and updating it iteratively such that 
+    \begin{equation}
+        \label{eq:it}
+\mathbf{R}^{(i+1)} = \mathbf{R}^{(i)}+ \alpha \left [ \mathbf{F}[\mathbf{S}_{\mathbf{R}^{(i)}} \mathbf{m}_0] - \mathbf{F}[\mathbf{m}_1] \right ]\;,
+    \end{equation}
+    where $\mathbf{F}$ is the local frequency operator, $\mathbf{S}_{\mathbf{R}^{(i)}}$ is the smoothing operator of radius $\mathbf{R}$ at the $i$th iteration, and $\alpha$ is a scalar constant that represents the step length.
+    After a small number of iterations, the smoothing operator is found that, once applied to $\mathbf{m}_0$, balances local frequency content with $\mathbf{m}_1$.
+
+%    Unlike $\mathbf{A}$, the smoothing operator, $\mathbf{S}$, is more challenging to invert 
+%    since it is generally a banded, but not diagonal, operator and physically represents the mixing of each data point with other nearby data points.
+    %This smoothing operator, $\mathbf{S}$, is diagonally-dominant nearly symmetric. 
+    %However, $\mathbf{S}^{-1}$ is non-trivial to calculate since inverse smoothing can create false high-frequency data if inverted incorrectly without regularization.
+%\multiplot{2}{a0,rect10b}{width=1.0\columnwidth}{The forward amplitude balancing weight, $\mathbf{A}$ (a) and the smoothing radius (b), which represents the number of samples in both dimensions that $\mathbf{m}_0$ must be smoothed over in a triangle weight to balance the local frequency content with $\mathbf{m}_1$. This represents the forward smoothing operation, $\mathbf{S}$.}
+
+    \subsection{Calculating the inverse Hessian}
+    Now that we have found the forward operators that separately balance amplitude and frequency content from $\mathbf{m}_0$ to $\mathbf{m_1}$, where $\mathbf{m}_1 \approx \mathbf{H} \mathbf{m}_0$, we want to find what combination of $\mathbf{A}$ and $\mathbf{S}$ best approximates $\mathbf{H}$.
+    %An advantage of finding $\mathbf{A}$ and $\mathbf{S}$ separately is that they can each be individually adjusted 
+    %the inverse of this operator such that $\hat{\mathbf{r}} = \left (\mathbf{H} \right )^{-1} \mathbf{m}_0$.
+    Since $\mathbf{H} = \mathbf{L}\tran\mathbf{L}$ is symmetric, we want our approximation of $\mathbf{H}$ to be as close to symmetric as possible.
+    Therefore, we define $\mathbf{H}$ as
+    \begin{equation}
+            \mathbf{H} \approx \mathbf{A}^{\sfrac{1}{2}}\mathbf{S}\mathbf{A}^{\sfrac{1}{2}} \;,
+    \end{equation}
+            %\mathbf{H} = \frac{1}{2}\left ( \mathbf{A}\mathbf{S} + \mathbf{S}\mathbf{A} \right )
+    where $\mathbf{A}$ is the operator that balances the amplitudes of $\mathbf{m}_0$ with respect to $\mathbf{m}_1$, and $\mathbf{S}$ is the operator that balances the local frequency content of $\mathbf{m}_0$ with respect to $\mathbf{m}_1$, both defined previously.
+    Applying the operations in this order allows the approximation of $\mathbf{H}$ to be symmetric, since both $\mathbf{A}$ and $\mathbf{S}$ are symmetric operations. 
+    %One thing to note is that the operators do not commute, so $\mathbf{AS} \neq \mathbf{SA}$.
+    Splitting up our approximation to the Hessian into two separate operators allows us to control how much of each operation and the order of each operation goes into correcting the image, and see how it affects the resulting image.
+%    \begin{equation}
+%        \mathbf{H} = \mathbf{A}_1^{\sfrac{1}{2}} \mathbf{S} \mathbf{A}_0^{\sfrac{1}{2}}\;,
+%    \end{equation}
+%    where $\mathbf{A}_0$ is found by balancing amplitudes between $\mathbf{m}_0$ and $\mathbf{m}_1$, $\mathbf{S}$ is calculated by finding the smoothing operator that balances the local frequency content between $\mathbf{m}_0$ and $\mathbf{A}_0^{\sfrac{1}{2}}\mathbf{m}_1$, and $\mathbf{A}_1$ is found by balancing amplitudes between $\mathbf{S}\mathbf{A}_0^{\sfrac{1}{2}}\mathbf{m}_0$ and $\mathbf{m}_1$.
+%    Applying the operations in this order allows the approximation of $\mathbf{H}$ to be close to symmetric. 
+%    However, note that here $\mathbf{H}$ is not quite symmetric, but since $\mathbf{A}_0$ and $\mathbf{A}_1$ should be very similar, it is nearly symmetric.
+%    One thing to note is that the operators do not commute, so $\mathbf{AS} \neq \mathbf{SA}$.
+%
+    Now that we have found the forward Hessian, $\mathbf{H}$, such that $\mathbf{H}\mathbf{m}_0 \approx \mathbf{m}_1$ using data matching operators, we want to find the inverse of this operator, $\mathbf{H}^{-1}$, such that $\hat{\mathbf{r}} \approx \mathbf{H} ^{-1} \mathbf{m}_0$ provides us with the least-squares image.
+    This is found as
+    \begin{equation}
+            \mathbf{H}^{-1} \approx \left ( \mathbf{A}^{\sfrac{1}{2}} \mathbf{S} \mathbf{A}^{\sfrac{1}{2}} \right )^{-1} = 
+            \mathbf{A}^{\sfrac{-1}{2}} \mathbf{S}^{-1} \mathbf{A}^{\sfrac{-1}{2}}\;.
+            \label{eq:invh}
+    \end{equation}
+
+    Since the amplitude operators only contain diagonal terms, they are simple to invert. 
+    %However, the smoothing operator, $\mathbf{S}$, is more challenging to invert. 
+    %While smoothing operator, $\mathbf{S}$, is diagonally-dominant nearly symmetric,. 
+    However, $\mathbf{S}^{-1}$ is non-trivial to calculate since inverse smoothing can create physically unrealistic high-frequency data if inverted incorrectly without regularization.
+    Therefore, $\mathbf{S}^{-1}$ must be calculated with care to ensure the inverted data is physically plausible. 
+    We iteratively invert $\mathbf{S}$ using shaping regularization \cite[]{shap}, where the shaping operator is a bandpass filter picked to ensure the passband contains only physically possible frequencies for the given data set.
+    The cost of applying our approximation to $\mathbf{H}^{-1}$ in equation (\ref{eq:invh}) is $\mathcal{O}(N)$, where $N$ is the image size. 
+    The constant is small, typically around 10 for the number of iterations, and the calculation and application of this approximation is computationally insignificant compared to one iteration of least-squares migration. %is far less computationally expensive than one iteration of least-squares migration.
+    %The constant is 
+    %It is a diagonally-dominant operator
+    %The amplitude operator accounts for the diagonal terms, and the smoothing operator accounts for the diagonal and off-diagonal terms of the forward Hessian operator.
+    %Our approximation to the forward Hessian operator turns out to be diagonally-dominant, where the amplitude operators account for the diagonal terms, and the smoothing operator accounts for the diagonal and off-diagonal terms.
+
+
+%This allows us to find an operator that effectively balances the local frequency content of $\mathbf{m}_0$ to match with $\mathbf{m}_1$. 
+%Next, we need to find the inverse of this operation to 
+%Since the operation is non-stationary, it is applied in the time domain
+
+
+%we follow the approach of CITE. This approach uses non-stationary triangle smoothing. for finding the smoothing radius that 
+%
+%to increase the resolution of the 
+
+%    \plot{migdec-shap}{width=1\columnwidth}{The corrected migrated image, found by applying equation (\ref{eq:invh}) to $\mathbf{m}_0$.}
+
+
+\section{Example}
+
+%\multiplot*{3}{mod-w3,image0-w3,migdec-w3}{width=0.66\columnwidth}{The Sigsbee model reflectivity (a), the first migrated image (b), and the corrected migrated image (c).}
+    We demonstrate the effectiveness of this method on the 2D Sigsbee model. %reverse-time migrated 
+    The Sigsbee2A 2D synthetic data set was created to mimic the geology of the Sigsbee escarpment in the Gulf of Mexico \cite[]{sigsbee}.
+    %In this example, we use reverse-time migration as our migration operator.
+    %* Zhiguang---Insert information about migration specifics (shot/receiver spacing, absorbing boundary conditions, etc.) *
+    A fixed-spread acquisition survey is generated, which consists of 301 shots spaced every 122 m.
+    The source wavelet for generating the synthetic data is a Ricker wavelet centered at 10 Hz.
+    The record length of the synthetic data is 10 s with a time step of 4 ms.
+We use reverse-time migration (RTM) as our migration operator.
+%\plot{migdec-shap}{width=1\columnwidth}{The corrected migrated image.}
+
+    We begin with the sub-surface reflectivity model (Figure \ref{fig:mod}) and migration velocity model (Figure \ref{fig:vel-migration}).
+    Next, we forward model the seismic data and migrate it to get our first conventionally migrated image, $\mathbf{m}_0$ (Figure \ref{fig:image0}). 
+    Then, we forward model $\mathbf{m}_0$ and remigrate that data to get $\mathbf{m}_1$ (Figure \ref{fig:image1}).
+    This provides us with the two images, $\mathbf{m}_0$ and $\mathbf{m}_1$, that we can use to find the operation $\mathbf{H}$ that maps $\mathbf{m}_0$ to $\mathbf{m}_1$.
+
+    Next, we calculate and apply the data matching operations as described in the previous section. 
+    The forward amplitude balancing weight, $\mathbf{A}$, is shown in Figure \ref{fig:a0}.
+    The calculated radius for the forward smoothing operation is shown in Figure \ref{fig:rect10b}.
+    After applying these two operators to $\mathbf{m}_0$ as described by equation (\ref{eq:invh}), we produce the corrected migrated image, as shown in Figure \ref{fig:migdec-shap}.
+    This corrected image better represents the subsurface reflectivity than the conventionally migrated image (Figure \ref{fig:image0}), as it exhibits more correct amplitude content and higher resolution comparable with the reflectivity model.
+
+    Figure \ref{fig:mod-w3,image0-w3,migdec-w3} shows a windowed section of the reflectivity model, the conventionally migrated image, and the corrected migrated image.
+    %The corrected migrated image is clearly of higher resolution and has more correct and consistent amplitude content than the conventionally migrated image.
+    The corrected migrated image exhibits clearly higher resolution and has more correct and consistent amplitude content than the conventionally migrated image.
+
+%    Figure \ref{fig:spec2} shows the frequency content of the conventionally migrated image and the corrected migrated image. 
+%    The corrected migrated image has a broader bandwidth and a flatter spectra than the conventionally migrated image, and generally recovers the higher frequency data that was lost during conventional migration.
+%    However, it does lose some low frequency content as a result of the process, 
+%    %Additionally, the frequency spectra of the corrected migrated image %closer resembles that of the model than the conventionally migrated image.
+%    but the frequency spectra of the corrected migrated image %closer resembles that of the model than the conventionally migrated image.
+%    is still a better approximation of the model than that of the conventionally migrated image.
+%    %is a better approximation of the model than that of the conventionally migrated image.
+%
+
+    In addition to directly applying this operator to the conventionally migrated image to improve resolution, this operator can be used as a preconditioner in iterative least-squares migration.
+    In this case, the corrected migrated image could be used as an initial model for least-squares migration for faster convergence.
+
+\section{Conclusions}
+%Conventionally migration involves 
+%A higher resolution least-squares migrated image 
+%This method does not involve dividing the data into windows 
+Least-squares migration can produce an accurate migrated image, but it is more computationally expensive than conventional migration.
+In this paper, we apply an approximate inverse Hessian operator to a conventional migrated image to approximate the least-squares migrated image.
+Since the primary differences between least-squares migration and conventional migration amount to amplitude and frequency variations, we approximate the forward Hessian by calculating frequency and amplitude matching operators.
+The amplitude matching operator is found by calculating the amplitude envelopes of migrated and remigrated images and smoothly dividing them, and the frequency matching operator is found using an iterative algorithm and non-stationary smoothing.
+The Hessian is approximated by a combination of these two operators to ensure symmetry.
+This method involves a windowless approach and is cheap to calculate and apply.
+Additionally, by defining the Hessian with two separate operators, we can examine, and control, the ``ingredients'' of the Hessian operator, and see how changing them impacts the final image.
+
+After the forward Hessian is calculated, we invert it iteratively using shaping regularization, and apply it to the conventionally migrated image to get an approximation of the least-squares migrated image.
+Successful results are achieved on the 2D Sigsbee synthetic model with reverse-time migration as the migration operator.
+
+%\plot{spec2}{width=0.85\columnwidth}{The frequency content of the conventionally migrated image (blue solid), and the corrected migrated image (red dashed).}
+
+\inputdir{sigmoid}
+%\plot{error}{width=1\columnwidth}{Convergence of conventional least-squares migration (blue) and using the corrected migrated image as a starting model (red). Here, the migration operator is post-stack Kirchhoff migration.}
+
+\section{Acknowledgements}
+        We thank the sponsors of the Texas Consortium for Computational Seismology (TCCS) for their financial support.
+The examples in this paper can be reproduced using the Madagascar open-source software package \cite[]{madagascar}.
+
+%\inputdir{kir}
+
+\onecolumn
+
+\bibliographystyle{seg}
+\bibliography{SEG,migdec}
+
+%        In seismic processing we have the operation of migration, which is a linear transform, and we can think of it as the adjoint of modeling. So if you know the velocity, and you have reflectivitym, so going from reflectivity to data is a linear transformaiton the adjoint of that is migration.
+%
+%        And then so reflectivity
+%        d = Lm
+%        So migraziton would be the adjoint applied to the data
+%        And if we try to do inverse, it would be:
+%        so this is LSM
+%
+%        And normally we would do it with iterations, so doing conjugate gradients or some sort of iterative method, where we approximate its inverse using iterations. But it is still expensive because in each iteration we need to do modeling and migration, and that's an expensive process.
+%        So, the idea is instead of computing this exactly, we approximate it.
+%        This is called migrtion deconvolution.
+%
+%        Now, what does it actrually do?
+%        SO the interesting part about the operations of modeling and migration here is that when you do them in term, you do modeling and migfration, so theoretixallty, it's an operation that does somethjing with the input, so you put in one image and get another image.
+%        But the other image does not have a shift---things will return to the same place. So, mostly it amounts to scaling, so different scale, and there is also some smearing.
+%
+%        SO if for example you put this as an input, you'll get the same points but they'll be smeared a little bit, but they'll be in the same place.
+%
+%        There is some smearing and there is some scaling. So that's what this is basically trying to correct.
+%        So, we go from here to here, and there are different ways people tried to do it before.
+%        One was just to focus on the scaling, and then so you're looking at the diagonal matrix to apply some scale to compensate.
+%        The other was to use theory to try to derive theoretically what this should be, and there are other theories, but they are based on ideal situations, so you don't consider the fact, for example, that the data that you have is not infinite so it has a finite extent.
+%        SO the theory is good, but it's idealized to look that everything is continuous, infinite, which is not the case. So part of what we see here when we look at the smearing, so part comes from the nature of modeling and migraiton, which we know theoretically, but part of it is from the fact that the data are not perfect, so we have limited extent, and discrete non-continuous data. So the theory may work in practice and get most of it, but not all of it because it is idealized. 
+%        So it's useful, but it's not ??? 27:45
+%
+%        So Antoine in CSM\ldots
+%        This year he shows an application that is specifically for RTM, but the idea comes from his older paper which is 
+%        And that was just simply that you \ldots
+%        This was done previously to look for just the scaling.
+%        You have sort of training images. You can use this M ans one of the training. But you can also create a bunch of the other ones. If you create a bunch of synthetic you have a bunch of reflectivity models, but it's sort of an open question of how you do it. So you can use spikes, reflectors, random, but in some way generate a bunch of those but you apply modeling and migration to it. And now you have example inputs and example outputs, and you want the inverse of this. SO you want to find out how to go back from this to the theoretical. And you cannot use too many bc it get expensive and it is easier to do LS migration with iterations. Computatinoally, the challenge is how to figure out what this is without using too many training images.
+%        Instead of the simple scale, he looks for a non-stationary matching filter. Now if we learn what this is, you can just apply it once, and there are also\ldots
+%        Single iteration migration, but they mean doing it once
+%        Find out how to approximate this inverse and they apply it to compensate. But you can also use it as a preconditioner.
+%        So the other use is, so say I'm still going to run iterations, but I'll but this correction inside, and then instead of 10 iterations, maybe I can use it fewer. 
+%
+%        So there are differences between the asdasd of preconditioned conjugate gradients. Some of them use m, and some split m into two parts. So we can say that you have instead of r and you're looking for x, and you're inverting afjsdkl;, so \ldots 36:40
+%        In any conjugate gradients, you can precondition by making it run faster by making the inverted matrix closer to the identity. So there is a dual purpose to this --- to find something you can apply once but you can also use it as a precondioner if you want to do it more than one time.
+%        So in this other paper, . . .
+%        The reason I mention it to you now for what you did for the matching and triangle filters, so we have another way to describe this kind of a transformation which is fairly robust, and it may work in this application. Basically we have scaling and smearing which is like legacy and high-resolution. So the better question is to find a good example to try. I'm not sure if we have anything in Madagascar yet. We have modeling and migration, so we need to find some kind of example of applying modeling and migration so we can look how to measure the transformation for that. 
+%        The interesting question is if you have scaling and you have smearing, maybe with variable radius traingle filters, so the two opeations you need both of them but they don't commute. So if you do scaling first and smearing second it's not the same if you do smearing first and then scaling. When we are dealing with this we know that it needs to be symmetric. 
+%
+%        There is scaling with the weight and triangle filtering. It can be this, or this. So we are not scaling symmetrically. Or maybe this. So if we start doing something like that, it becomes non-linear, so if we have scaling twice we cannot use linear inversion to find the scaling. So it actually makes it more interesting, so now we need to think how to linearize it so if we have something like that for example, we can say that we want to find maybe an inital scaling; maybe I'll take it to be one initial and 43:15
+%        and the other term you neglect to get\ldots
+%        Now this one is linear, but it has an interesting combination here from the left side 
+%        So now it's a linear problem can be solved with regularization but not the same one as before. So it makes the whole problem a little more interesting
+%
+%        And then potentially, even if it's not that, so say we go back to legacy and high resolution, so we know there is scaling and there is smearing, but nothing says that scaling has to be on this side or on this size, so it can be both or it can be different on this side and the other size, so it makes it a more general problem with potentially more interesting solutions. 
+%
+%        So in terms of ideas there is not a lot there, besides what I have told you, but you can read it and follow the references to other papers. So they put some work into implementing it. But if we make it work with scaling and smoothing, it would actually me a much cleaner implementation. Because they have to, So I suspect that what Antoine Guitton had to do to implement it was breaking everything into windows, some overlap, and then finding filters in each window and trying to change them, so it's not very stable and it's a bit messy. So if it works, it works, but I think we can find a cleaner result. and also you know if you break it into scaling and smearing, you know the ingredients of what happens in there, so you have a better understanding.
+%
