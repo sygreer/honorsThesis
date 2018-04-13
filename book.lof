@@ -1,17 +1,60 @@
 \addvspace {10pt}
-\contentsline {figure}{\numberline {1.1}{\ignorespaces Initial legacy (a) and high-resolution (b) images. These images show the same subsurface geology, but look remarkably different as the high-resolution image has distinctly higher frequency content than the legacy image.}}{6}{figure.1.1}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{6}{figure.1.1}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{6}{figure.1.1}
-\contentsline {figure}{\numberline {1.2}{\ignorespaces The smoothing radius, which is a function of time and space, this method produces after 5 iterations. This represents the number of samples in time that the high-resolution image needs to be smoothed over in a triangle weight to balance local frequency content with the legacy image.}}{7}{figure.1.2}
-\contentsline {figure}{\numberline {1.3}{\ignorespaces Spectral content of the legacy (red) and high-resolution (blue) images before (a) and after (b) spectral balancing.}}{9}{figure.1.3}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{9}{figure.1.3}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{9}{figure.1.3}
-\contentsline {figure}{\numberline {1.4}{\ignorespaces Difference in local frequencies (residual) between the legacy and high-resolution images before (a) and after (b) the 5th iteration of frequency balancing.}}{11}{figure.1.4}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{11}{figure.1.4}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{11}{figure.1.4}
-\contentsline {figure}{\numberline {1.5}{\ignorespaces Initial PP (a) and SS (b) images.}}{13}{figure.1.5}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{13}{figure.1.5}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{13}{figure.1.5}
-\contentsline {figure}{\numberline {1.6}{\ignorespaces Interleaved PP and warped SS traces before (a) and after (b) frequency balancing and residual registration. After registration, the signal content between the two initial images is more aligned; for example, the reflections around 0.3 and 0.6 s. This indicates a successful registration.}}{14}{figure.1.6}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{14}{figure.1.6}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{14}{figure.1.6}
+\addvspace {10pt}
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Initial legacy (a) and high-resolution (b) images. These images show the same subsurface geology, but look remarkably different as the high-resolution image has distinctly higher frequency content than the legacy image.}}{7}{figure.2.1}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{7}{figure.2.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{7}{figure.2.1}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces The smoothing radius, which is a function of time and space, this method produces after 5 iterations. This represents the number of samples in time that the high-resolution image needs to be smoothed over in a triangle weight to balance local frequency content with the legacy image.}}{8}{figure.2.2}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Spectral content of the legacy (red) and high-resolution (blue) images before (a) and after (b) spectral balancing.}}{10}{figure.2.3}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{10}{figure.2.3}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{10}{figure.2.3}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Difference in local frequencies (residual) between the legacy and high-resolution images before (a) and after (b) the 5th iteration of frequency balancing.}}{12}{figure.2.4}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{12}{figure.2.4}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{12}{figure.2.4}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Initial PP (a) and SS (b) images.}}{14}{figure.2.5}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{14}{figure.2.5}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{14}{figure.2.5}
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Interleaved PP and warped SS traces before (a) and after (b) frequency balancing and residual registration. After registration, the signal content between the two initial images is more aligned; for example, the reflections around 0.3 and 0.6 s. This indicates a successful registration.}}{15}{figure.2.6}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{15}{figure.2.6}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{15}{figure.2.6}
+\addvspace {10pt}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces The initial legacy (a) and high-resolution (b) images. The merged image (c) is the final product of the proposed workflow: the combination of both the legacy and high-resolution images.}}{19}{figure.3.1}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{19}{figure.3.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{19}{figure.3.1}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{19}{figure.3.1}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Spectra for the entire image display of the legacy (red) and high-resolution (blue) images before (a) and after (b) spectral balancing.}}{21}{figure.3.2}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{21}{figure.3.2}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{21}{figure.3.2}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Calculated spatially and temporally variable smoothing radius. This represents the number of seconds in the temporal direction that the high-resolution image gets averaged over in a triangle weight to balance local frequency content with the legacy image at each sample.}}{23}{figure.3.3}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Difference in local frequencies between the legacy and high-resolution images before (a) and after (b) balancing their frequency content by non-stationary smoothing.}}{25}{figure.3.4}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{25}{figure.3.4}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{25}{figure.3.4}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Difference between the legacy and smoothed high-resolution images before (a) and after (b) aligning the data sets. Before accounting for time shifts, much of the signal content did not align in time, so coherent reflections were subtracted out. After accounting for time shifts, the reflections are more aligned, so much of the subtracted information is noise.}}{27}{figure.3.5}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{27}{figure.3.5}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{27}{figure.3.5}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces The weights for the high-resolution (a) and legacy (b) images for the least-squares merge. The high-resolution weight is strongly weighted in the shallow part and blends to favor the legacy image with depth. The legacy weight is selected to boost the legacy image's relative amplitudes to match that of the high-resolution image.}}{29}{figure.3.6}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{29}{figure.3.6}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{29}{figure.3.6}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces The spectra of the entire image display of the legacy (red dashed), high-resolution (blue dotted), and merged (magenta solid) images for the first data set.}}{30}{figure.3.7}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces The first 600 ms of data from a sample line from the legacy, high-resolution, and merged image (a). The same images with depth for the legacy, high-resolution, and merged images (b). The merged image resembles the high-resolution image in the shallow parts and incorporates the more coherent lower frequency information from the legacy image with depth.}}{32}{figure.3.8}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{32}{figure.3.8}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{32}{figure.3.8}
+\contentsline {figure}{\numberline {3.9}{\ignorespaces The spectral content of the entire image display of the legacy (red dashed), high-resolution (blue dotted), and resultant merged (magenta solid) images for the second data set.}}{36}{figure.3.9}
+\contentsline {figure}{\numberline {3.10}{\ignorespaces The legacy (a), high-resolution (b), and resultant merged (c) images of the second data set.}}{37}{figure.3.10}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{37}{figure.3.10}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{37}{figure.3.10}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{37}{figure.3.10}
+\addvspace {10pt}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces The Sigsbee model reflectivity (a), migration velocity model (b), the first migrated image, $\mathbf {m}_0$ (c), and the second migrated image, $\mathbf {m}_1$ (d).}}{43}{figure.4.1}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{43}{figure.4.1}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{43}{figure.4.1}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{43}{figure.4.1}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{43}{figure.4.1}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces The forward amplitude balancing weight, $\mathbf {A}$ (a) and the smoothing radius (b), which represents the number of samples in both dimensions that $\mathbf {m}_0$ must be smoothed over in a triangle weight to balance the local frequency content with $\mathbf {m}_1$. This represents the forward smoothing operation, $\mathbf {S}$.}}{46}{figure.4.2}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{46}{figure.4.2}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{46}{figure.4.2}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces The corrected migrated image, found by applying equation (\ref {eq:invh}) to $\mathbf {m}_0$.}}{48}{figure.4.3}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces The Sigsbee model reflectivity (a), the first migrated image (b), and the corrected migrated image (c).}}{49}{figure.4.4}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{49}{figure.4.4}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{49}{figure.4.4}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{49}{figure.4.4}
+\addvspace {10pt}

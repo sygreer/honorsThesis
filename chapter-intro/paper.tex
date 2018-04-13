@@ -2,5 +2,17 @@
 \author{Sarah Yvonne Greer}
 \maketitle
 
+%Data matching problems are prevalent in many applications of seismic data processing.
+Data matching is a conceptually simple problem that is present in many computational geophysics applications. 
+Essentially, given two data sets, data matching can be thought of as finding the transformation from one data set to the other. 
+This is useful in applications such as multi-component seismic image registration, where two separate seismic images, one P-wave image and one S- wave image, are acquired over the same area. 
+These must be properly matched, as the two images are not temporally aligned and have different frequency and amplitude content, in order for them to be directly compared and interpreted. 
+
+Many other examples of data matching are prevalent in geophysical applications, such as timelapse image registration, seismic and well-log tying, deconvolution, and surface-related multiple elimination.
+
+In this thesis, I will outline several methods and applications of seismic data matching, and introduce a new method for matching frequency content between data sets.
+
+
+%However, many data matching algorithms, such as Dynamic Time Warping, can be computationally expensive, especially when applied to large multi-dimensional seismic data sets.
 \subsection{Background}
-Seismic data contains fundamentally non-stationary variations.
+Seismic data contains fundamentally non-stationary variations in attributes such as frequency and amplitude content.

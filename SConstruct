@@ -1,8 +1,8 @@
 from rsf.book import *
 
 #chapters = Split('chapter-intro chapter-theory chapter-example chapter-conclusion')
-#chapters = Split('chapter-intro chapter-locfreq chapter-merge chapter-mighes')
-chapters = Split('chapter-locfreq')
+chapters = Split('chapter-intro chapter-locfreq chapter-merge chapter-mighes chapter-conclusion')
+#chapters = Split('chapter-locfreq chapter-mighes')
 
 Thesis(chapters,
        univ='UT',
