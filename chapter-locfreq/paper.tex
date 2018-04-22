@@ -1,188 +1,204 @@
+%\title{Theory}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
 \title{Balancing local frequency content in seismic data using non-stationary smoothing}
+\relax\footnotetext{Parts of this chapter were first published in \cite{locfreq}, \cite{merge2}, and \cite{merge}. This work was done under the supervision of Dr. Sergey Fomel.}
 \author{Sarah Yvonne Greer}
 \maketitle
 
 \begin{abstract}
-        Seismic data can experience non-stationary frequency variations caused by attenuation. This
-        problem is encountered when matching multiple data sets, such as in multicomponent image
-        registration, because signals with differing frequency content are hard to correlate. In
-        this paper, we propose a method to balance frequency content between data sets while taking
-        into account non-stationary frequency variations. This method involves finding and applying
-        a non-stationary smoothing operator to minimize the local frequency difference between data
-        sets. Numerical examples demonstrate that the proposed method improves multicomponent image
-        registration and matching images of differing resolution. 
+        Seismic data can experience non-stationary frequency variations caused by attenuation. 
+        This problem is encountered when matching multiple data sets, such as in multicomponent image registration, because signals with differing frequency content are hard to correlate. 
+        In this chapter, we introduce two methods for balancing frequency content between data sets while taking into account non-stationary frequency variations. 
+        Both methods involve finding and applying a non-stationary smoothing operator to minimize the local frequency difference between data sets. 
+        Numerical examples demonstrate that the proposed method improves multicomponent image registration and matching images of differing resolution. 
 \end{abstract}
 
 \section{Introduction}
-        Matching seismic data has many applications in geophysical processing methods, such as
-        multi-component image registration, time-lapse image registration, matching well-ties to
-        seismic data, and merging seismic data sets \cite[]{ps,fomel2003,lumley,herrera2012}.
-        Typically, the workflow for matching data involves finding the optimal time shift, or amount
-        of stretching and compressing, of one trace relative to the other that produces the greatest
-        similarity between the two traces, as seen in dynamic time warping and local similarity
-        scanning \cite[]{hale2013, timelapse, herrera}. However, when the two signals that need to
-        be aligned have different spectral content, their comparison can be difficult. Most seismic
-        data experience non-stationary, or spatially and temporally variant, frequency content
-        caused by attenuation. This problem was discussed in application to multicomponent image
-        registration by \cite{fomel2003}, who applied frequency balancing methods to improve
-        registration results. \cite{ltft} proposed using local time-frequency decomposition (LTFD)
-        to balance frequencies between multicomponent data during registration. However, LTFD is a
-        relatively computationally expensive method.
+        Matching seismic data has many applications in geophysical processing methods, such as multi-component image registration, time-lapse image registration, matching well-ties to seismic data, and merging seismic data sets \cite[]{ps,fomel2003,lumley,herrera2012}.
+        Typically, the workflow for matching data involves finding the optimal time shift, or amount of stretching and compressing, of one trace relative to the other that produces the greatest similarity between the two traces, as seen in dynamic time warping and local similarity scanning \cite[]{hale2013, timelapse, herrera}. 
+        However, when the two signals that need to be aligned have different spectral content, their comparison can be difficult. 
+        Most seismic data experience non-stationary, or spatially and temporally variant, frequency content caused by attenuation. 
+        This problem was discussed in application to multicomponent image registration by \cite{fomel2003}, who applied frequency balancing methods to improve registration results. 
+        \cite{ltft} proposed using local time-frequency decomposition (LTFD) to balance frequencies between multicomponent data during registration. 
+        However, LTFD is a relatively computationally expensive method.
         
-        In this paper, we propose a method to remove non-stationary frequency differences that limit
-        the effectiveness of matching data. We suggest applying the proposed method to processing
-        flows that involve matching data before attempting to find the time shift to align their
-        signal content. To balance frequency content, we use a non-stationary smoothing operator
-        with an adjustable smoothing radius to apply to the higher frequency data set. Our approach
-        takes the form of an optimization problem which is solved using an iterative method. We
-        apply this method to examples of merging high-resolution and conventional seismic images and
-        multicomponent image registration.
+        In this chapter, we propose methods for removing non-stationary frequency differences that limit the effectiveness of matching data. 
+        We suggest applying the either of the proposed methods to processing flows that involve matching data before attempting to find the time shift to align their signal content. 
+        To balance frequency content, we use a non-stationary smoothing operator with an adjustable smoothing radius to apply to the higher frequency data set. 
+        Our first approach finds the smoothing operator directly, but is based on the primary assumption that the data can be modeled by a summation of Ricker wavelets. 
+        Our second approach of finding the smoothing radius is based on understanding what the smoothing operator physically does, and takes the form of an optimization problem which is solved using an iterative method. 
+        We introduce these methods and apply them to examples of merging high-resolution and conventional seismic images and multicomponent image registration.
 
 \section{Method}
 \inputdir{merge}
-        Two signals of differing frequencies are more difficult to correlate than signals of similar
-        frequencies.  For example, Figure \ref{fig:legacy,hires-agc} shows two seismic images
-        representing the same subsurface, except they have distinctly different spectral content, as
-        shown in Figure \ref{fig:nspectra-orig}. In order to be directly comparable, these two
-        images should have similar frequency content.
-        In this paper, we look at local frequency \cite[]{attr}, which can be thought of as a
-        smoothed estimate of instantaneous frequency \cite[]{white}. Local frequency is a more
-        geologically accurate attribute than instantaneous frequency because it honors
-        time-frequency uncertainty and does not contain physically unrealistic negative or extremely
-        high frequency values \cite[]{attr}.
+        Two signals of differing frequencies are more difficult to correlate than signals of similar frequencies.  
+        For example, Figure \ref{fig:legacy,hires-agc} shows two seismic images representing the same subsurface, except they have distinctly different spectral content, as shown in Figure \ref{fig:nspectra-orig}. 
+        In order to be directly comparable, these two images should have similar frequency content.
+        Here, we look at local frequency \cite[]{attr}, which can be thought of as a smoothed estimate of instantaneous frequency \cite[]{white}. 
+        Local frequency is a more geologically accurate attribute than instantaneous frequency because it honors time-frequency uncertainty and does not contain physically unrealistic negative or extremely high frequency values \cite[]{attr}.
 
-        In order to balance local frequency content, we propose smoothing the higher frequency data
-        using a non-stationary triangle smoothing operator with an adjustable radius. Here, the
-        radius at each point is the number of samples in time that that specific data point gets 
-        averaged over
-        %in either direction 
-        in a triangle weight.
+        In order to balance local frequency content, we propose smoothing the higher frequency data using a non-stationary triangle smoothing operator with an adjustable radius. 
+        Here, the radius at each point is the number of samples in time that that specific data point gets averaged over in a triangle weight.
+
+        In order to find the temporally and spatially variable smoothing radius that we need to apply to the higher frequency image to balance local frequency content with the lower frequency image, we take two approaches.
+        The first approach is finding the smoothing radius based on assumptions of what the data we are looking at can be represented by, and the second approach is based on understanding physically what non-stationary smoothing does to a data set.
+        Both approaches work well in different situations---the first approach is less computationally expensive than the second approach, but is only applicable when the two data sets fit the assumptions that are used to calculate what the smoothing radius is.
+        The second approach finds the smoothing radius in an iterative manner, but manages to work well for any data set given to it.
+
+
+        \subsection{Theoretical smoothing radius}
+\inputdir{../chapter-merge/apache}
+        %A more effective method, which accounts for temporally and spatially variable frequency content that is present in most seismic data, is to apply a non-stationary filter using frequency information from both images. 
+        To demonstrate the effectiveness of finding the smoothing radius using this method, we use the {\it Apache} seismic data sets.
+        The two initial images are shown in Figure \ref{fig:legacy,hires}, and their frequency content are shown in Figure \ref{fig:nspectra}.
+
+        To balance the non-stationary frequency variations between data sets, we use a simple triangle smoothing operator with an adjustable radius. 
+        Here, the radius at each point is the amount of time, in seconds, that that specific data point gets averaged over in a triangle weight in the temporal direction.
+        We specifically look at local frequency \cite[]{attr}, which is a time-dependent frequency attribute, and can be thought of as a smoothed estimate of instantaneous frequency \cite[]{white}. 
+%        For the procedures described in this thesis, local frequency is a better-suited attribute than instantaneous frequency.
+%        Local frequency allows the comparison of frequency content in a local region of samples, as opposed to instantaneous frequency, which allows for a point by point comparison of frequency values between images. 
+%        Because the corresponding reflections between images may not be precisely aligned in time, using the local frequency attribute to balance frequency content between images would allow for more accurate frequency balancing than instantaneous frequency. 
+
+        \multiplot{2}{legacy,hires}{width=0.47\columnwidth}{The initial legacy (a) and high-resolution (b) images.}
+        \multiplot{2}{nspectra,hires-smooth-spec}{width=0.47\columnwidth}{Spectra for the entire image display of the legacy (red) and high-resolution (blue) images before (a) and after (b) spectral balancing using the theoretical method.} 
+
+        This method is based off of the primary assumption that the signal can be represented by Ricker wavelets convolved with the Earth's reflectivity series.
+        Since the data we are working with are seismic, this can be a good assumption \cite[]{ricker}.
+
+        The justification for triangle smoothing is that it is a simple approximation to Gaussian smoothing. 
+        The frequency response of the triangle smoothing filter \cite[]{pvi} is
+        \begin{equation}
+            \label{eq:Tf}
+            T(f) = \mathrm{sinc}^2\left(\frac{2\pi f \Delta t}{2}\right) \approx 1-\frac{(2\pi f)^2(\Delta t)^2}{12}\;.
+        \end{equation}
+        This frequency response resembles that of a Gaussian:
+        \begin{equation}
+            \label{eq:gaussian}
+            G(f) = e^{-\alpha f^2} \approx 1 - \alpha f^2\;.
+        \end{equation}
+        If the signals' spectra can be represented by Ricker wavelets,
+        \begin{equation} 
+            \label{eq:Sn}
+            S_{n}(f) = A_{n} \left(\frac{f}{f_{n}}\right)^2e^{-\left(\frac{f}{f_{n}}\right)^{2}}\,
+        \end{equation}
+        where, in image $n$, $S_n$ is the frequency spectrum, $f_n$ is the peak frequency, and $A_n$ is the amplitude, Gaussian smoothing can transform the signal to a different dominant frequency.
+        
+        Because we are smoothing the high-resolution image to match it with the legacy image, we can relate the high-resolution frequencies, $S_h$, to the legacy frequencies, $S_l$, such that
+        \begin{equation} 
+            \label{eq:smooth}
+            S_{l}(f)=A e^{-\alpha f^2}\,S_h(f)      
+        \end{equation}
+        where $A=A_l/A_h$,
+        \begin{equation}
+            \label{eq:alpha}
+            \alpha = \frac{1}{f_l^2}-\frac{1}{f_h^2} \;,
+        \end{equation}
+        and the subscripts $l$ and $h$ correspond to the legacy and high-resolution images, respectively.
+        
+        Combining equations~(\ref{eq:Tf}), (\ref{eq:gaussian}), and (\ref{eq:alpha}) leads to the specification of the triangle smoothing radius as
+        \begin{equation}
+            \label{eq:radius}
+            \Delta t \approx \frac{1}{2\pi}\sqrt{12\left(\frac{1}{f_{l}^{2}}-\frac{1}{f_{h}^{2}}\right)}\;.
+        \end{equation}
+        Here, $\Delta t$ is the radius of smoothing, measured in seconds, applied to the high-resolution image to match the frequency content with the legacy image at each sample. 
+        The calculated smoothing radius for this data set is shown in Figure \ref{fig:rect}.
+        
+        \plot{rect}{width=0.6\columnwidth}{Calculated spatially and temporally variable smoothing radius. This represents the number of seconds in the temporal direction that the high-resolution image gets averaged over in a triangle weight to balance local frequency content with the legacy image at each sample.}
+        
+        We measure local frequencies in both images and apply smoothing specified by equation~(\ref{eq:radius}) to the high-resolution image.
+        Since this is only an approximation of what the smoothing radius should be under ideal conditions, we adjust the constant $12$ in the equation to achieve a better match. 
+        In this example, this effectively reduces the difference between the spectral content of the images, as shown in Figure \ref{fig:hires-smooth-spec}. 
+        Figure \ref{fig:freqdif,freqdif-filt} shows the difference in local frequencies before and after smoothing. 
+        After smoothing, the frequency difference is minimized. 
+        
+        This method works well for simple data sets with overlapping frequency content. 
+        However, more complicated data sets, as seen in the next example, may require additional steps for successful frequency balancing.
+
+        \multiplot{2}{freqdif,freqdif-filt}{width=0.47\columnwidth}{Difference in local frequencies between the legacy and high-resolution images before (a) and after (b) balancing their frequency content by non-stationary smoothing.} 
 
         %Our goal is to specifically remove the higher frequency signal variations 
 
-        Our goal is to find the temporally and spatially variable smoothing radius, $\mathbf{R}$, that
-        minimizes the difference in local frequencies between the two data sets. This can be shown
-        in the objective function
+        \subsection{Iterative method for calculating the smoothing radius}
+        \inputdir{merge}
+        The theoretical smoothing radius works in some situations, like in the first example of the next chapter, but it doesn't work in situations where there is not much overlap in frequency content between data sets, like in the second example of the next chapter.
+        In this case, we use an iterative method to find what the smoothing radius should be that is based on the physical understanding of what smoothing is doing.
+
+        The goal of this method is to find the temporally and spatially variable smoothing radius, $\mathbf{R}$, that minimizes the difference in local frequencies between the two data sets. 
+        This can be shown in the objective function
         \begin{equation}
                 \label{eq:obj}
                 \min_{\mathbf{R} \in [1,N]} \Big \Vert \mathbf{F}[ \mathbf{S}_{\mathbf{R}} \mathbf{d}_h ] - 
                 \mathbf{F}[ \mathbf{d}_l] \Big \Vert\;,
         \end{equation}
-        where $\mathbf{S}_\mathbf{R}$ is the non-stationary smoothing operator of smoothing radius
-        $\mathbf{R}$, $\mathbf{d}_h$ is the higher frequency data, $\mathbf{d}_l$ is the lower
-        frequency data, $\mathbf{F}$ is the local frequency operator, and $N$ is the maximum size of
-        the smoothing radius.
-        Although smoothing is a linear operation, the smoothed data, $\mathbf{S_R d}_h$, depends
-        non-linearly on $R$. However, the objective from equation (\ref{eq:obj}) is nearly convex,
-        and we choose to use an intuitive iterative approach to find an approximate smoothing
-        radius.
+        where $\mathbf{S}_\mathbf{R}$ is the non-stationary smoothing operator of smoothing radius $\mathbf{R}$, $\mathbf{d}_h$ is the higher frequency data, $\mathbf{d}_l$ is the lower frequency data, $\mathbf{F}$ is the local frequency operator, and $N$ is the maximum size of the smoothing radius.
+        Although smoothing is a linear operation, the smoothed data, $\mathbf{S_R d}_h$, depends non-linearly on $R$. However, the objective from equation (\ref{eq:obj}) is nearly convex, and we choose to use an intuitive iterative approach to find an approximate smoothing radius.
                                 
-        The main premise behind the method comes from the fact that, in general, 
-        %the more samples the data are smoothed over, 
-        the greater the smoothing radius, the more high frequencies are attenuated by smoothing.
-        We choose an initial guess of the non-stationary smoothing radius before applying
-        corrections based on two primary assumptions:
+        The main premise behind the method comes from the fact that, in general, the greater the smoothing radius, the more high frequencies are attenuated by smoothing. 
         \begin{enumerate}
-        \item The smoothing radius is too \emph{small} at a specified point if, after smoothing, the
-                higher frequency data has \emph{higher} local frequency than the lower frequency
-                data. Thus, the smoothing radius must be \emph{increased} at that point. 
-        \item The smoothing radius is too \emph{large} at a specified point if, after smoothing, the
-                higher frequency data has \emph{lower} local frequency than the lower frequency
-                data. Thus, the smoothing radius must be \emph{decreased} at that point.
+        \item The smoothing radius is too \emph{small} at a specified point if, after smoothing, the higher frequency data has \emph{higher} local frequency than the lower frequency data. Thus, the smoothing radius must be \emph{increased} at that point. 
+        \item The smoothing radius is too \emph{large} at a specified point if, after smoothing, the higher frequency data has \emph{lower} local frequency than the lower frequency data. Thus, the smoothing radius must be \emph{decreased} at that point.
         \end{enumerate}
         We apply these assumptions using a line-search method:
                         \begin{equation}
-                               \label{eq:ls}
-                               \mathbf{R}^{(i+1)} = \mathbf{R}^{(i)}+ \alpha \mathbf{r}^{(i)},
+                               \label{eq:alg}
+                               \mathbf{R}^{(i+1)} = \mathbf{R}^{(i)}+ c \mathbf{r}^{(i)},
                         \end{equation}
-        where $\mathbf{R}^{(i)}$ is the smoothing radius at the $i$th iteration, $\alpha$ is a
-        scalar constant that can be thought of as the step length, and $\mathbf{r}^{(i)}$ is the
-        residual at the $i$th iteration, which can be thought of as the search direction, and is
-        defined as
+        where $\mathbf{R}^{(i)}$ is the smoothing radius at the $i$th iteration, $c$ is a scalar constant that can be thought of as the step length, and $\mathbf{r}^{(i)}$ is the residual at the $i$th iteration, which can be thought of as the search direction, and is defined as
           \begin{equation}
                 \label{eq:residual}
                 \mathbf{r} = \mathbf{F}[\mathbf{S}_{\mathbf{R}} \mathbf{d}_h] - \mathbf{F}[\mathbf{d}_l]\;.
           \end{equation}
-        It can be noted that when equation (\ref{eq:residual}) is positive, the higher frequency
-        data still has a higher local frequency value at that specific point than the lower
-        frequency data, thus the higher frequency data is under-smoothed and the smoothing radius
-        should be increased at that point. This follows the form of the first assumption. The second
-        assumption is used when equation (\ref{eq:residual}) is negative. When equation
-        (\ref{eq:residual}) is zero, the correct radius has been found and no further corrections
-        are made. Thus, it is justifiable to set the search direction from equation (\ref{eq:ls})
-        equal to the residual.
+        It can be noted that when equation (\ref{eq:residual}) is positive, the higher frequency data still has a higher local frequency value at that specific point than the lower frequency data, thus the higher frequency data is under-smoothed and the smoothing radius should be increased at that point. This follows the form of the first assumption. 
+        The second assumption is used when equation (\ref{eq:residual}) is negative. 
+        When equation (\ref{eq:residual}) is zero, the correct radius has been found and no further corrections are made. 
+        Thus, it is justifiable to set the search direction from equation (\ref{eq:alg}) equal to the residual.
         
-        Using the two assumptions, we can continually adjust the smoothing radius until we 
-        achieve the desired result of balancing the local frequency content between the two data
-        sets. In practice, this method produces an acceptable solution in approximately 5 iterations
-        and exhibits sublinear convergence. After smoothing the higher frequency data with the
-        estimated radius, we use the lower frequency and smoothed higher frequency data to estimate
-        time shifts and align the two data sets.
+        Using the assumptions, we can choose an intial guess for the smoothing radius and continually adjust the smoothing radius until we  achieve the desired result of balancing the local frequency content between the two data sets. 
+        In practice, this method produces an acceptable solution in approximately 5 iterations and exhibits sublinear convergence. After smoothing the higher frequency data with the estimated radius, we use the lower frequency and smoothed higher frequency data to estimate time shifts and align the two data sets.
         
-\section{Examples}
-        This method is applicable to workflows that require matching data with different frequency
-        content. In this paper, we demonstrate two examples where smoothing data before matching
-        produces better results.
+%\section{Examples}
+        This method is applicable to workflows that require matching data with different frequency content. 
+        Here, we demonstrate that using this algorithm to match high-resolution and legacy seismic images produces better results.
         
-        \subsection{Matching legacy and high-resolution images}
-        High-resolution seismic data, such as those acquired with the P-cable acquisition system,
-        can produce very detailed images of the near subsurface \cite[]{tip}. When compared to
-        conventional seismic images, high-resolution images have a higher dominant frequency and a
-        larger frequency bandwidth. However, they usually lack low frequency content and depth
-        coverage that is present in conventional seismic images. As a result, successful
-        interpretation of high-resolution images can be aided by matching with legacy data coverage
-        over the same area.
+%        \subsection{Matching legacy and high-resolution images}
+        High-resolution seismic data, such as those acquired with the P-cable acquisition system, can produce very detailed images of the near subsurface \cite[]{tip}. 
+        When compared to conventional seismic images, high-resolution images have a higher dominant frequency and a larger frequency bandwidth. 
+        However, they usually lack low frequency content and depth coverage that is present in conventional seismic images. 
+        As a result, successful interpretation of high-resolution images can be aided by matching with legacy data coverage over the same area.
 
-        \multiplot{2}{legacy,hires-agc}{width=0.9\columnwidth}{Initial legacy (a) and
-        high-resolution (b) images. These images show the same subsurface geology, but look
-        remarkably different as the high-resolution image has distinctly higher frequency content
-        than the legacy image.}
+        \multiplot{2}{legacy,hires-agc}{width=0.7\columnwidth}{Initial legacy (a) and high-resolution (b) images. 
+                These images show the same subsurface geology, but look remarkably different as the high-resolution image has distinctly higher frequency content than the legacy image.}
 
-        \plot{rect5}{width=0.9\columnwidth}{The smoothing radius, which is a function of time and
-        space, this method produces after 5 iterations. This represents the number of samples in
-        time that the high-resolution image needs to be smoothed over in a triangle weight %in time
-        to balance local frequency content with the legacy image.}
+        \plot{rect5}{width=0.6\columnwidth}{The smoothing radius, which is a function of time and space, this method produces after 5 iterations. This represents the number of samples in time that the high-resolution image needs to be smoothed over in a triangle weight to balance local frequency content with the legacy image.}
 
-        Example legacy and high-resolution images of the same subsurface are shown in Figure
-        \ref{fig:legacy,hires-agc}. The first step in matching the two images is to ensure that they
-        both have a similar frequency bandwidth so they are directly comparable. The average frequency
-        spectra for the two images are shown in Figure \ref{fig:nspectra-orig}. From this, it is
-        evident that there is almost no overlap in frequency bandwidth between the two images.
-        To address this problem, we apply a low-cut filter to the legacy image to remove some of the
-        lower frequencies that are simply not present in the high-resolution image. Next, we
-        implement the method described in the previous section to balance local frequency content
-        between the two images. The difference in local frequencies (residual, by equation
-        \ref{eq:residual}) between the high-resolution and legacy images before balancing frequency
-        content and after 5 iterations of the algorithm in equation (\ref{eq:ls}) is shown in Figure
-        \ref{fig:freqdif,freqdif-filt5}. After balancing local frequencies, the images show a
-        similar spectral bandwidth (Figure \ref{fig:high-smooth-spec5}), which helps increase the
-        correlation between the two images and makes matching reflections better defined.
+        Example legacy and high-resolution images of the same subsurface are shown in Figure \ref{fig:legacy,hires-agc}. 
+        The first step in matching the two images is to ensure that they both have a similar frequency bandwidth so they are directly comparable. 
+        The average frequency spectra for the two images are shown in Figure \ref{fig:nspectra-orig}. 
+        From this, it is evident that there is almost no overlap in frequency bandwidth between the two images.
+        To address this problem, we apply a low-cut filter to the legacy image to remove some of the lower frequencies that are simply not present in the high-resolution image. 
+        Next, we implement the method described in the previous section to balance local frequency content between the two images. 
+        The difference in local frequencies (residual, by equation \ref{eq:residual}) between the high-resolution and legacy images before balancing frequency content and after 5 iterations of the algorithm in equation (\ref{eq:alg}) is shown in Figure \ref{fig:freqdif,freqdif-filt5}. 
+        After balancing local frequencies, the images show a similar spectral bandwidth (Figure \ref{fig:high-smooth-spec5}), which helps increase the correlation between the two images and makes matching reflections better defined.
         
-        After the frequency content is matched, the optimal time shift is found to align signal
-        content between the legacy and high-resolution images. We then apply this time shift to
-        %the original legacy and high-resolution images---the frequency content is only degraded for
-        the original high-resolution image---the frequency content is only degraded for the purpose
-        of finding the time shift. 
+        After the frequency content is matched, the optimal time shift is found to align signal content between the legacy and high-resolution images. We then apply this time shift to the original high-resolution image---the frequency content is only degraded for the purpose of finding the time shift. 
         
-        An application of aligning the high-resolution and legacy images is discussed in the companion
-        paper \cite[]{merge}.
+        An application of aligning the high-resolution and legacy images is discussed in the next chapter.
 
-        \multiplot{2}{nspectra-orig,high-smooth-spec5}{width=0.81\columnwidth}{Spectral content of
-        the legacy (red) and high-resolution (blue) images before (a) and after (b) spectral
-        balancing.}
+        \multiplot{2}{nspectra-orig,high-smooth-spec5}{width=0.47\columnwidth}{Spectral content of the legacy (red) and high-resolution (blue) images before (a) and after (b) spectral balancing using the theoretical method.}
 
-\subsection{Multicomponent image registration}
-        Multicomponent seismic image registration is an important step before the interpretation of
-        P and S images of the subsurface. It involves warping the space of S images to align
-        reflections with the analogous reflections of P images \cite[]{fomel2003,warp}.
+%\subsection{Multicomponent image registration}
+\subsection{Iterative method for calculating the smoothing radius: A modification}
+        The algorithm previously presented works well in cases when one data set has clearly higher frequency content than the other.
+        %However, this need not always be the case.
+        However, in some cases, the two data sets may have similar local frequency content, but they may still need to be matched.
+        We illustrate a modified version of the previous algorithm by demonstrating it on an example of multi-component seismic image registration.
+
+        Multicomponent seismic image registration is an important step before the interpretation of P and S images of the subsurface. It involves warping the space of S images to align reflections with the analogous reflections of P images \cite[]{fomel2003,warp}.
 
         Figure \ref{fig:pp,ss} shows PP and SS images from a 9-component seismic survey \cite[]{attr}.
-        To properly register the images, we follow the
-        method proposed in \cite{warp}. It consists of three primary steps: (1) initial registration
-        of PP and SS images using initial interpretation and well-log analysis; (2) balancing
-        frequency and amplitude content; and (3) final registration using residual local similarity
-        scanning. We incorporate our method of balancing frequency content into the second step in
-        this process.
+        To properly register the images, we follow the method proposed in \cite{warp}. 
+        It consists of three primary steps: (1) initial registration of PP and SS images using initial interpretation and well-log analysis; (2) balancing frequency and amplitude content; and (3) final registration using residual local similarity scanning. 
+        We incorporate our method of balancing frequency content into the second step in this process.
 
         Before initial registration, the PP image has much higher frequency content than the SS
         image. After the SS image is temporally compressed to PP time for initial registration, the
@@ -192,7 +208,7 @@
         different areas to balance frequency content. In order to do this, we modify the proposed
         method to include two separate smoothing operators---one for each image.
 
-        \multiplot{2}{freqdif,freqdif-filt5}{width=0.81\columnwidth}{Difference in local frequencies
+        \multiplot{2}{freqdif,freqdif-filt5}{width=0.47\columnwidth}{Difference in local frequencies
         (residual) between the legacy and high-resolution images before (a) and after (b) the 5th
         iteration of frequency balancing.}
 
@@ -214,7 +230,7 @@
                 \mathbf{r} = \mathbf{F}[\mathbf{S}_{\mathbf{R}_{p}}\mathbf{d}_p] -
                 \textbf{F}[\mathbf{S}_{\mathbf{R}_s}\mathbf{d}_s]\;.
             \end{equation}
-        The ideal radius is still found using the same line-search from equation (\ref{eq:ls}),
+        The ideal radius is still found using the same line-search from equation (\ref{eq:alg}),
         except we allow the smoothing radius to be negative. Physically, a negative smoothing radius
         would signify that the image should be sharpened at that particular point instead of
         smoothed. In this case, instead of trying to sharpen the PP image at that particular point, 
@@ -251,32 +267,54 @@
         content between the two images.
 
 \inputdir{vecta}
-        \multiplot{2}{pp,ss}{width=0.85\columnwidth}{Initial PP (a) and SS (b) images.}
+        \multiplot{2}{pp,ss}{width=0.7\columnwidth}{Initial PP (a) and SS (b) images.}
 
         The results of using this spectral balancing method are shown in Figure
-        \ref{fig:before,after}. Comparable results were achieved in \cite{ltft}, who used LTFD to
+        \ref{fig:before,after}. Comparable results were achieved in \cite{ltft}, who used local time-frequency decomposition (LTFD) to
         balance the spectral content between the two images. However, the method we propose in this
-        paper is more straightforward and significantly less computationally expensive.
+        chapter is more straightforward and significantly less computationally expensive.
 
-\section{Conclusions}
-        It is difficult to compare signals with differing frequency content because signals with
-        differing frequencies are hard to correlate. In this paper, we proposed a method of
-        balancing frequency content between data which takes the form of an optimization problem
-        solved by a simple iterative algorithm. It is a relatively inexpensive and effective method
-        compared to previously proposed methods of balancing frequencies between data sets. We
-        applied this method to examples of matching seismic images of differing resolution and for
-        multicomponent image registration.
+        So far, this algorithm and its modification have been discussed when the smoothing radius is only calculated along one dimension. 
+        However, Chapter 5 provides an application where the smoothing radius is calculated in multiple directions.
 
-        \multiplot{2}{before,after}{width=0.85\columnwidth}{Interleaved PP and warped SS traces before
+        \multiplot{2}{before,after}{width=0.65\columnwidth}{Interleaved PP and warped SS traces before
         (a) and after (b) frequency balancing and residual registration. After registration, the
         signal content between the two initial images is more aligned; for example, the reflections
         around 0.3 and 0.6 s. This indicates a successful registration.} 
+        
+\section{Convergence analysis}
+\inputdir{convergence}
+        Since this algorithm was developed from observations and intuition based on what smoothing is physically doing, no error analysis or convergence criteria has been developed in this thesis.
+        However, it is observed that this algorithm generally exhibits sublinear convergence.
+        Additionally, the initial guess for what the smoothing radius should be negligibly impacts the final result.
+        Figure \ref{fig:all} shows the convergence of the algorithm from equation (\ref{eq:alg}) when applied to the {\em P-cable} data set from the second example in this chapter (Figure \ref{fig:legacy,hires-agc}).
+        It is evident that no matter the initial guess, the resulting convergence is relatively unaffected, and with the correct choice of step length $c$, converges in few iterations.
+        After convergence, continuing iterations do not affect the final result.
+
+        Figure \ref{fig:scalar} shows the convergence when choosing different values of $c$, the step length from Equation (\ref{eq:alg}).
+        From this, it is evident that the step length is important for fast and stable convergence. 
+        If too large a step length is chosen, the method does not converge to the ideal solution.
+        If the step length is too small, the algorithm takes many more iterations to converge.
+        With the ``correct'' step length, however, the algorithm usually converges in under 10 iterations in practice.
+
+        \multiplot{2}{all,scalar}{width=0.95\columnwidth}{Convergence of the algorithm from Equation (\ref{eq:alg}) for (a) different initial guesses, and (b) different choices of $c$, the step length, using the theoretical radius as the initial guess.}
+
+\section{Conclusions}
+        It is difficult to compare signals with differing frequency content because signals with
+        differing frequencies are hard to correlate. In this chapter, we proposed two methods of
+        balancing frequency content between data. 
+        The first one takes a theoretical approach of what we expect the data to be, and the second one takes the form of an optimization problem
+        solved by a simple iterative algorithm. This algorithm is a relatively inexpensive and effective method
+        compared to previously proposed methods of balancing frequencies between data sets. We
+        applied these methods to examples of matching seismic images of differing resolution and for
+        multicomponent image registration.
+
 
 \section{Acknowledgements}
         We thank the sponsors of the Texas Consortium for Computational Seismology (TCCS) for their
         financial support.
-
-\onecolumn
-
+%
+%\onecolumn
+%
 %\bibliographystyle{seg}
 %\bibliography{SEG,locfreq}

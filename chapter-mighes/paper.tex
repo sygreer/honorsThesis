@@ -1,5 +1,9 @@
 \title{Improving migration resolution by approximating the least-squares Hessian using non-stationary amplitude and frequency matching}
+
+\usetikzlibrary{arrows,automata}
 \author{Sarah Greer*, Zhiguang Xue, and Sergey Fomel, The University of Texas at Austin}
+\relax\footnotetext{Parts of this chapter were first published in \cite{mighess}. This work was done under the supervision of Dr. Sergey Fomel, and Dr. Zhiguang Xue helped in the migration of the data.}
+
 \newcommand*{\tran}{^{\mkern-1.5mu\mathsf{T}}}
 \maketitle
 \inputdir{sigsbee}
@@ -73,12 +77,30 @@ Conventional migration is less computationally expensive:
     Therefore, the inverse Hessian operator, $\mathbf{H}^{-1} = \left ( \mathbf{L} \tran \mathbf{L} \right )^{-1}$, that must be applied to $\mathbf{m}_0$ to get $\hat{\mathbf{r}}$ can be calculated by first finding the transformation, $\mathbf{H}$, that maps $\mathbf{m}_0$ to $\mathbf{m}_1$, and then inverting it.
     This can be interpreted as a data matching problem between $\mathbf{m}_1$ and $\mathbf{m}_0$.
 
-\multiplot{4}{mod,vel-migration,image0,image1}{width=0.98\columnwidth}{The Sigsbee model reflectivity (a), migration velocity model (b), the first migrated image, $\mathbf{m}_0$ (c), and the second migrated image, $\mathbf{m}_1$ (d).}
+\begin{center}
+\begin{tikzpicture}[auto,node distance=4cm,thick, ->, >=stealth',shorten >=1pt]
+  \tikzstyle{every state}=[fill=black,draw=none,text=white]
+
+        \node[state]         (A)              {$\mathbf{m}_0$};
+        \node[state]         (B) [right of=A] {$\mathbf{m}_1$};
+        \node[state]         (C) [left of=A]  {$\hat{\mathbf{r}}$};
+
+        \path (A) edge [bend left] node {$\mathbf{H}$} (B)
+            edge [bend left] node {$\mathbf{H}^{-1}$} (C)
+        (B) edge [bend left] node {$\mathbf{H}^{-1}$} (A)
+        (C) edge [bend left] node {$\mathbf{H}$} (A);
+
+\end{tikzpicture}
+\end{center}
+
+
+    \multiplot{2}{mod,vel-migration}{width=0.85\columnwidth}{The Sigsbee model reflectivity (a), and migration velocity model (b).}
+    \multiplot{2}{image0,image1}{width=0.85\columnwidth}{The first migrated image, $\mathbf{m}_0$ (a), and the second migrated image, $\mathbf{m}_1$ (b).}
+%\multiplot{4}{mod,vel-migration,image0,image1}{width=0.98\columnwidth}{The Sigsbee model reflectivity (a), migration velocity model (b), the first migrated image, $\mathbf{m}_0$ (c), and the second migrated image, $\mathbf{m}_1$ (d).}
     Since the primary differences between conventionally migrated images and least-squares migrated images amount to amplitude and frequency variations, we use two separate non-stationary operators to represent the forward Hessian---one to account for amplitude variations, and the other to account for frequency variations. 
     Therefore, our approximation of $\mathbf{H}$ can be calculated from some application of a non-stationary amplitude balancing operator, $\mathbf{A}$, and a non-stationary frequency balancing operator, $\mathbf{S}$.
     We first calculate the forward Hessian since the forward frequency balancing operation, $\mathbf{S}$, is well defined and simple to calculate. 
     We then invert our approximation to the Hessian and apply it to $\mathbf{m}_0$ to correct the amplitude and frequency content of the migrated image.
-
 
 \subsection{Amplitude operator}
     First, we choose to find an amplitude balancing operation that, when applied to $\mathbf{m}_0$, balances the amplitudes of $\mathbf{m}_0$ with respect to $\mathbf{m}_1$. 
@@ -98,7 +120,7 @@ Conventional migration is less computationally expensive:
     To do this, we propose using non-stationary triangle smoothing. 
     This approach involves finding and applying a non-stationary smoothing operator, which is the amount of samples, in both dimensions, that $\mathbf{m}_0$ will be averaged over in a triangle weight, to balance the local frequency content with $\mathbf{m}_1$. 
     
-    We find the smoothing radius iteratively using the method of \cite{locfreq}, with a modification that allows the smoothing radius to be calculated in both spatial directions. 
+    We find the smoothing radius iteratively using the method of \cite{locfreq} from chapter 3, with a modification that allows the smoothing radius to be calculated in both spatial directions. 
 Essentially, this is found by choosing an initial guess of a smoothing radius, $\mathbf{R}^{(0)}$, and updating it iteratively such that 
     \begin{equation}
         \label{eq:it}
@@ -107,7 +129,10 @@ Essentially, this is found by choosing an initial guess of a smoothing radius, $
     where $\mathbf{F}$ is the local frequency operator, $\mathbf{S}_{\mathbf{R}^{(i)}}$ is the smoothing operator of radius $\mathbf{R}$ at the $i$th iteration, and $\alpha$ is a scalar constant that represents the step length.
     After a small number of iterations, the smoothing operator is found that, once applied to $\mathbf{m}_0$, balances local frequency content with $\mathbf{m}_1$.
 
-    \multiplot{2}{a0,rect10b}{width=1.0\columnwidth}{The forward amplitude balancing weight, $\mathbf{A}$ (a) and the smoothing radius (b), which represents the number of samples in both dimensions that $\mathbf{m}_0$ must be smoothed over in a triangle weight to balance the local frequency content with $\mathbf{m}_1$. This represents the forward smoothing operation, $\mathbf{S}$.}
+    For this particular application using depth migration, this operator should technically be specified to balance {\em wavenumber} instead of {\em frequency}.
+    However, it is kept as frequency to keep consistent terminology with the algorithm developed in chapter 3.
+
+    \multiplot{2}{a0,rect10b}{width=0.85\columnwidth}{The forward amplitude balancing weight, $\mathbf{A}$ (a) and the smoothing radius (b), which represents the number of samples in both dimensions that $\mathbf{m}_0$ must be smoothed over in a triangle weight to balance the local frequency content with $\mathbf{m}_1$. This represents the forward smoothing operation, $\mathbf{S}$.}
 
 \subsection{Calculating the inverse Hessian}
     Now that we have found the forward operators that separately balance amplitude and frequency content from $\mathbf{m}_0$ to $\mathbf{m_1}$, where $\mathbf{m}_1 \approx \mathbf{H} \mathbf{m}_0$, we want to find what combination of $\mathbf{A}$ and $\mathbf{S}$ best approximates $\mathbf{H}$.
@@ -129,16 +154,22 @@ Essentially, this is found by choosing an initial guess of a smoothing radius, $
 
     Since the amplitude operators only contain diagonal terms, they are simple to invert. 
     However, $\mathbf{S}^{-1}$ is non-trivial to calculate since inverse smoothing can create physically unrealistic high-frequency data if inverted incorrectly without regularization.
+
+    \inputdir{triop}
+    \plot{tf}{width=0.75\columnwidth}{Transfer functions for a stationary forward triangle smoothing operator (blue) and its inverse (red).}
+
+    Figure \ref{fig:tf} shows transfer functions for a stationary forward and inverse triangle smoothing operator of a radius of 10 samples.
+    In the forward case, triangle smoothing acts as a low-pass filter.
+    However, its inverse can introduce high frequency information, which is physically unrealistic for the data we are working with.
+
+
     Therefore, $\mathbf{S}^{-1}$ must be calculated with care to ensure the inverted data is physically plausible. 
     We iteratively invert $\mathbf{S}$ using shaping regularization \cite[]{shap}, where the shaping operator is a bandpass filter picked to ensure the passband contains only physically possible frequencies for the given data set.
     The cost of applying our approximation to $\mathbf{H}^{-1}$ in equation (\ref{eq:invh}) is $\mathcal{O}(N)$, where $N$ is the image size. 
     The constant is small, typically around 10 for the number of iterations, and the calculation and application of this approximation is computationally insignificant compared to one iteration of least-squares migration. 
 
-    \plot{migdec-shap}{width=1\columnwidth}{The corrected migrated image, found by applying equation (\ref{eq:invh}) to $\mathbf{m}_0$.}
-
 \section{Example}
 
-    \multiplot*{3}{mod-w3,image0-w3,migdec-w3}{width=0.66\columnwidth}{The Sigsbee model reflectivity (a), the first migrated image (b), and the corrected migrated image (c).}
     We demonstrate the effectiveness of this method on the 2D Sigsbee model. 
     The Sigsbee2A 2D synthetic data set was created to mimic the geology of the Sigsbee escarpment in the Gulf of Mexico \cite[]{sigsbee}.
     A fixed-spread acquisition survey is generated, which consists of 301 shots spaced every 122 m.
@@ -146,10 +177,15 @@ Essentially, this is found by choosing an initial guess of a smoothing radius, $
     The record length of the synthetic data is 10 s with a time step of 4 ms.
 We use reverse-time migration (RTM) as our migration operator.
 
+    \inputdir{sigsbee}
+    \plot{migdec-shap}{width=0.8\columnwidth}{The corrected migrated image, found by applying equation (\ref{eq:invh}) to $\mathbf{m}_0$.}
+
     We begin with the sub-surface reflectivity model (Figure \ref{fig:mod}) and migration velocity model (Figure \ref{fig:vel-migration}).
     Next, we forward model the seismic data and migrate it to get our first conventionally migrated image, $\mathbf{m}_0$ (Figure \ref{fig:image0}). 
     Then, we forward model $\mathbf{m}_0$ and remigrate that data to get $\mathbf{m}_1$ (Figure \ref{fig:image1}).
     This provides us with the two images, $\mathbf{m}_0$ and $\mathbf{m}_1$, that we can use to find the operation $\mathbf{H}$ that maps $\mathbf{m}_0$ to $\mathbf{m}_1$.
+
+\multiplot{3}{image0-w3,migdec-w3,mod-w3}{width=0.47\columnwidth}{The first migrated image (a), the corrected migrated image (b), and the Sigsbee model reflectivity (c).}
 
     Next, we calculate and apply the data matching operations as described in the previous section. 
     The forward amplitude balancing weight, $\mathbf{A}$, is shown in Figure \ref{fig:a0}.
@@ -157,7 +193,8 @@ We use reverse-time migration (RTM) as our migration operator.
     After applying these two operators to $\mathbf{m}_0$ as described by equation (\ref{eq:invh}), we produce the corrected migrated image, as shown in Figure \ref{fig:migdec-shap}.
     This corrected image better represents the subsurface reflectivity than the conventionally migrated image (Figure \ref{fig:image0}), as it exhibits more correct amplitude content and higher resolution comparable with the reflectivity model.
 
-    Figure \ref{fig:mod-w3,image0-w3,migdec-w3} shows a windowed section of the reflectivity model, the conventionally migrated image, and the corrected migrated image.
+
+    Figure \ref{fig:image0-w3,migdec-w3,mod-w3} shows a windowed section of the reflectivity model, the conventionally migrated image, and the corrected migrated image.
     The corrected migrated image exhibits clearly higher resolution and has more correct and consistent amplitude content than the conventionally migrated image.
 
     In addition to directly applying this operator to the conventionally migrated image to improve resolution, this operator can be used as a preconditioner in iterative least-squares migration.

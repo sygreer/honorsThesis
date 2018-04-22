@@ -51,6 +51,12 @@ def radius(high, low,               # initial high-resolution and legacy images
     Flow('low-freq',low,locfreq)
     Result('low-freq',locfreqplot('%s Local Frequency'%titlelow))
 
+    locfreq2 = '''iphase order=10 rect1=1 rect2=1 hertz=y complex=y | 
+                 put label="Frequency" unit=Hz'''
+
+    Flow('low-freq2',low,locfreq2)
+    Result('low-freq2',locfreqplot('%s Instantaneous Frequency'%titlelow))
+
     Flow('freqdif','low-freq high-freq',freqdif)
     Result('freqdif',freqdifplot(''))
 

@@ -1,0 +1,17 @@
+Since this algorithm was developed from observations and intuition based on what smoothing is physically doing, no error analysis or convergence criteria has been developed in this thesis.
+
+* Introduction
+* Background
+    * Amplitude balancing
+    * Frequency balancing
+    * Time shifts
+* Frequency balancing
+* Matching and merging high-resolution and legacy seismic images
+    * Background
+    * Theory
+    * 2D Example
+    * 3D Example
+* Migration deconvolution
+* Conclusions
+
+
