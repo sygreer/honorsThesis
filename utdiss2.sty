@@ -521,8 +521,8 @@
 %\def\target@degree{M.A.}
 \def\target@degree{B.S.}
 %\def\d@gree{MASTER OF ARTS}
-%\def\d@gree{BACHELOR OF SCIENCE WITH HONORS}
-\def\d@gree{BACHELOR OF SCIENCE}
+\def\d@gree{BACHELOR OF SCIENCE WITH HONORS}
+%\def\d@gree{BACHELOR OF SCIENCE}
 	% Must not have default of previous degree, degree, or degreeabbr
 	% in order for the entries in disstemplate.tex to be read correctly
 	% when creating master's document.
@@ -1028,6 +1028,8 @@
     \addcontentsline{toc}{chapter}{Vita} }
 \def\vitatail{ \par\vfill\par
     \noindent Permanent address: \parbox[t]{3.5in}{\raggedright\add@ress}
+    %\par\noindent
+    %\noindent Email address: \parbox[t]{3.5in}{\raggedright sygreer@utexas.edu}
     \vfill\par\noindent
     \renewcommand{\thefootnote}{\fnsymbol{footnote}}
     This \doc@type{} was typeset

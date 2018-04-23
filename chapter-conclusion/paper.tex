@@ -14,7 +14,7 @@ This method worked well in certain situations, but was not robust enough to work
 In the second method, I introduced an iterative algorithm to find the smoothing radius, and this method converges quickly and works well in several presented situations. 
 Finally, a modification to this algorithm was shown and allows smoothing for more complex data sets.
 
-This chapter also discusses two applications of these algorithms---the frequency balancing algorithm was demonstrated on an application on matching high-resolution and legacy seismic images, and the modified algorithm was demonstrated on an application of multicomponent seismic image registration.
+This chapter also discusses two applications of these algorithms---the frequency balancing algorithm was demonstrated on an application of matching high-resolution and legacy seismic images, and the modified algorithm was demonstrated on an application of multicomponent seismic image registration.
 
 Chapter 4 goes into more detail of the application of matching and merging high-resolution and legacy seismic images.
 This example takes two seismic volumes, acquired over the same area but using different technologies, and first matches them before merging them together to produce an optimized third image.
@@ -22,14 +22,16 @@ First, the method is demonstrated on a 2D line from the Gulf of Mexico.
 Then, the method is applied to a 3D seismic volume from a different part of the Gulf of Mexico.
 
 Chapter 5 discusses another application of improving migration resolution by approximating the least-squares Hessian using non-stationary data matching operations.
-It is realized that the least-squares Hessian can calculated by solving a data matching problem between two conventionally migrated images, and can be represented by the combination of amplitude and frequency balancing operations.
+An approximation to the least-squares Hessian can calculated by solving a data matching problem between two conventionally migrated images, and can be represented by the combination of amplitude and frequency balancing operations.
 An example is applied to a 2D synthetic Sigsbee data set.
 
 \subsection{Future work}
 In the future, the work presented in chapter 5 should be extended to involve real data and 3D examples. 
-It also could benefit by comparing the results of the proposed approach taken in the chapter to other previous approaches presented to approximate the least-squares Hessian \cite[]{migdec,lsamp,siklsm,pwlsrtm,diagamp,debflt,prestack,poststack}, to see how it compares in different situations.
+It also could benefit by comparing the results of the proposed approach taken in the chapter to other previous approaches presented to approximate the least-squares Hessian \cite[]{migdec,lsamp,siklsm,pwlsrtm,diagamp,debfilt,prestack,poststack}, to see how it compares in different situations.
 
-Another component to data matching may incorporate the phase of the signal to be matched. 
+Another extension of this data matching procedure may be to incorporate
+%Another component to data matching may incorporate 
+the phase of the signal to be matched. 
 Negligible improvements were made when trying to incorporate phase corrections into the high-resolution and legacy data matching problem of chapter 4, but other data matching problems may benefit from these corrections.
 
 Several applications of data matching were discussed in this thesis. 
@@ -37,7 +39,8 @@ However, there are still many applications that may remain unaddressed from a da
 Problems such as seismic and well-log tying, deconvolution, automatic gain control (AGC), and surface-related multiple elimination (SRME) can also be recast as data matching problems, and looking at these problems in a new light may bring advancements to computational geophysics.
 
 \subsection{Code}
-The examples in this thesis were implemented with the Madagascar open-source software environment for reproducible computational experiments \cite[]{madagacsar}.
+The examples in this thesis were implemented with the Madagascar open-source software environment for reproducible computational experiments \cite[]{madagascar}.
+
 The package is available at \url{http://www.ahay.org/}.
 
 The reproducible document for the results in this thesis, including code, is available at \url{http://www.sygreer.com/research/honorsThesis}.

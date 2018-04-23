@@ -126,7 +126,7 @@
     %In this example, this effectively reduces the difference between the spectral content of the images, as shown in Figure \ref{fig:hires-smooth-spec}. 
     %Figure \ref{fig:freqdif,freqdif-filt} shows the difference in local frequencies before and after smoothing. 
 
-%    After smoothing, the frequency difference is minimized. 
+    %After smoothing, the frequency difference is minimized. 
     
     This method works well for simple data sets with overlapping frequency content. 
     However, more complicated data sets, as seen in the next example, may require additional steps for successful frequency balancing.
@@ -134,7 +134,7 @@
     In addition to frequency balancing, we initially attempted accounting for wavelet phase differences between data sets at this step. 
     However, we saw this had a negligible impact on the final result, so we decided not to include it in this method.
     
-%%    \multiplot{2}{freqdif,freqdif-filt}{width=0.65\columnwidth}{Difference in local frequencies between the legacy and high-resolution images before (a) and after (b) balancing their frequency content by non-stationary smoothing.} 
+    % \multiplot{2}{freqdif,freqdif-filt}{width=0.65\columnwidth}{Difference in local frequencies between the legacy and high-resolution images before (a) and after (b) balancing their frequency content by non-stationary smoothing.} 
 
 \subsection{Measuring time shifts}
 
@@ -280,8 +280,3 @@
 
     We thank Michael DeAngelo, August Lau, Tip Meckel, and Chuan Yin for useful discussions and Apache and Fieldwood for providing the data used in the first example. 
     We also thank the sponsors of the Texas Consortium for Computational Seismology (TCCS) for their financial support. 
-
-%\onecolumn
-%
-%\bibliographystyle{seg}
-%\bibliography{SEG,merge}

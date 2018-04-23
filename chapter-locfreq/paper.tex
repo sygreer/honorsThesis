@@ -156,11 +156,9 @@
         Using the assumptions, we can choose an intial guess for the smoothing radius and continually adjust the smoothing radius until we  achieve the desired result of balancing the local frequency content between the two data sets. 
         In practice, this method produces an acceptable solution in approximately 5 iterations and exhibits sublinear convergence. After smoothing the higher frequency data with the estimated radius, we use the lower frequency and smoothed higher frequency data to estimate time shifts and align the two data sets.
         
-%\section{Examples}
         This method is applicable to workflows that require matching data with different frequency content. 
         Here, we demonstrate that using this algorithm to match high-resolution and legacy seismic images produces better results.
         
-%        \subsection{Matching legacy and high-resolution images}
         High-resolution seismic data, such as those acquired with the P-cable acquisition system, can produce very detailed images of the near subsurface \cite[]{tip}. 
         When compared to conventional seismic images, high-resolution images have a higher dominant frequency and a larger frequency bandwidth. 
         However, they usually lack low frequency content and depth coverage that is present in conventional seismic images. 
@@ -186,7 +184,6 @@
 
         \multiplot{2}{nspectra-orig,high-smooth-spec5}{width=0.47\columnwidth}{Spectral content of the legacy (red) and high-resolution (blue) images before (a) and after (b) spectral balancing using the theoretical method.}
 
-%\subsection{Multicomponent image registration}
 \subsection{Iterative method for calculating the smoothing radius: A modification}
         The algorithm previously presented works well in cases when one data set has clearly higher frequency content than the other.
         %However, this need not always be the case.
@@ -200,17 +197,13 @@
         It consists of three primary steps: (1) initial registration of PP and SS images using initial interpretation and well-log analysis; (2) balancing frequency and amplitude content; and (3) final registration using residual local similarity scanning. 
         We incorporate our method of balancing frequency content into the second step in this process.
 
-        Before initial registration, the PP image has much higher frequency content than the SS
-        image. After the SS image is temporally compressed to PP time for initial registration, the
-        two images have more similar frequency content. However, additional frequency balancing is
-        still needed before residual registration. This poses a problem as neither image has
-        distinctly higher frequencies than the other, so both images need to be smoothed in
-        different areas to balance frequency content. In order to do this, we modify the proposed
-        method to include two separate smoothing operators---one for each image.
+        Before initial registration, the PP image has much higher frequency content than the SS image. 
+        After the SS image is temporally compressed to PP time for initial registration, the two images have more similar frequency content. 
+        However, additional frequency balancing is still needed before residual registration. 
+        This poses a problem as neither image has distinctly higher frequencies than the other, so both images need to be smoothed in different areas to balance frequency content. 
+        In order to do this, we modify the proposed method to include two separate smoothing operators---one for each image.
 
-        \multiplot{2}{freqdif,freqdif-filt5}{width=0.47\columnwidth}{Difference in local frequencies
-        (residual) between the legacy and high-resolution images before (a) and after (b) the 5th
-        iteration of frequency balancing.}
+        \multiplot{2}{freqdif,freqdif-filt5}{width=0.47\columnwidth}{Difference in local frequencies (residual) between the legacy and high-resolution images before (a) and after (b) the 5th iteration of frequency balancing.}
 
         We modify the objective in equation (\ref{eq:obj}) as
             \begin{equation}
@@ -219,39 +212,17 @@
                 \mathbf{S}_{\mathbf{R}_p} \mathbf{d}_{p} ] - \mathbf{F}[
                 \mathbf{S}_{\mathbf{R}_s}\mathbf{d}_{s}] \Big \Vert\;, 
             \end{equation}
-        %were $S_{R_p}$ and $S_{R_s}$ are the non-stationary smoothing operators for the PP and
-        %SS images, respectively, and 
-        where $\mathbf{d}_p$ and $\mathbf{d}_s$ are the PP and SS images, respectively, and
-        $\mathbf{S}_{\mathbf{R}_p}$ and $\mathbf{S}_{\mathbf{R}_s}$ are the non-stationary smoothing
-        operators for the PP and SS images, respectively.
+        where $\mathbf{d}_p$ and $\mathbf{d}_s$ are the PP and SS images, respectively, and $\mathbf{S}_{\mathbf{R}_p}$ and $\mathbf{S}_{\mathbf{R}_s}$ are the non-stationary smoothing operators for the PP and SS images, respectively.
         We also modify the residual from equation (\ref{eq:residual}) as
             \begin{equation}
                 \label{eq:residual2}
                 \mathbf{r} = \mathbf{F}[\mathbf{S}_{\mathbf{R}_{p}}\mathbf{d}_p] -
                 \textbf{F}[\mathbf{S}_{\mathbf{R}_s}\mathbf{d}_s]\;.
             \end{equation}
-        The ideal radius is still found using the same line-search from equation (\ref{eq:alg}),
-        except we allow the smoothing radius to be negative. Physically, a negative smoothing radius
-        would signify that the image should be sharpened at that particular point instead of
-        smoothed. In this case, instead of trying to sharpen the PP image at that particular point, 
-        we
-        %choose to smooth the SS image by the negative component of the smoothing radius. Thus, we
-        %define $\mathbf{R}_p$ anda $\mathbf{R}_s$ at each sample as
-        %\begin{equation}
-        %        \mathbf{R}_p = \begin{cases} \mathbf{R} &\mbox{if } \mathbf{R} \ge 1 \\
-        %1 & \mbox{otherwise} \end{cases} 
-        %\end{equation}
-        %and
-        %\begin{equation}
-        %        \mathbf{R}_s = \begin{cases} |\mathbf{R}| &\mbox{if } \mathbf{R} \le -1 \\
-        %1 & \mbox{otherwise} \end{cases} 
-        %\end{equation}
-        %choose to smooth the SS image by the negative component of the smoothing radius. Thus, we
-        %define the $i$th components of $\mathbf{R}_p$ and $\mathbf{R}_s$ as
-        choose to smooth the SS image by the negative part of the smoothing radius. 
-        Thus, we define the $i$th components of $\mathbf{R}_p$ and $\mathbf{R}_s$ as
-        %Thus, we define $R_{p,i}$ and $R_{s,i}$ (the $i$th components of $\mathbf{R}_p$ and
-        %$\mathbf{R}_s$) as
+        The ideal radius is still found using the same line-search from equation (\ref{eq:alg}), except we allow the smoothing radius to be negative. 
+        Physically, a negative smoothing radius would signify that the image should be sharpened at that particular point instead of smoothed. 
+        In this case, instead of trying to sharpen the PP image at that particular point, we choose to smooth the SS image by the negative part of the smoothing radius. 
+        Thus, we define the $i$th components of $\mathbf{R}_p$ and $\mathbf{R}_s$ as 
         \begin{equation}
                 R_{p,i} = \begin{cases} R_{i} &\mbox{if } R_{i} \ge 1 \\
         1 & \mbox{otherwise} \end{cases} 
@@ -261,26 +232,20 @@
                 R_{s,i} = \begin{cases} |R_{i}| &\mbox{if } R_{i} \le -1 \\
         1 & \mbox{otherwise} \end{cases} 
         \end{equation}
-
-        where $R_i$ is the $i$th component of $\mathbf{R}$ and a radius of 1 represents no
-        smoothing. This allows each image to be smoothed in different areas to balance the frequency
-        content between the two images.
+        where $R_i$ is the $i$th component of $\mathbf{R}$ and a radius of 1 represents no smoothing. 
+        This allows each image to be smoothed in different areas to balance the frequency content between the two images.
 
 \inputdir{vecta}
         \multiplot{2}{pp,ss}{width=0.7\columnwidth}{Initial PP (a) and SS (b) images.}
 
-        The results of using this spectral balancing method are shown in Figure
-        \ref{fig:before,after}. Comparable results were achieved in \cite{ltft}, who used local time-frequency decomposition (LTFD) to
-        balance the spectral content between the two images. However, the method we propose in this
-        chapter is more straightforward and significantly less computationally expensive.
+        The results of using this spectral balancing method are shown in Figure \ref{fig:before,after}. 
+        Comparable results were achieved in \cite{ltft}, who used local time-frequency decomposition (LTFD) to balance the spectral content between the two images. 
+        However, the method we propose in this chapter is more straightforward and significantly less computationally expensive.
 
         So far, this algorithm and its modification have been discussed when the smoothing radius is only calculated along one dimension. 
         However, Chapter 5 provides an application where the smoothing radius is calculated in multiple directions.
 
-        \multiplot{2}{before,after}{width=0.65\columnwidth}{Interleaved PP and warped SS traces before
-        (a) and after (b) frequency balancing and residual registration. After registration, the
-        signal content between the two initial images is more aligned; for example, the reflections
-        around 0.3 and 0.6 s. This indicates a successful registration.} 
+        \multiplot{2}{before,after}{width=0.65\columnwidth}{Interleaved PP and warped SS traces before (a) and after (b) frequency balancing and residual registration. After registration, the signal content between the two initial images is more aligned; for example, the reflections around 0.3 and 0.6 s. This indicates a successful registration.} 
         
 \section{Convergence analysis}
 \inputdir{convergence}
@@ -300,21 +265,12 @@
         \multiplot{2}{all,scalar}{width=0.95\columnwidth}{Convergence of the algorithm from Equation (\ref{eq:alg}) for (a) different initial guesses, and (b) different choices of $c$, the step length, using the theoretical radius as the initial guess.}
 
 \section{Conclusions}
-        It is difficult to compare signals with differing frequency content because signals with
-        differing frequencies are hard to correlate. In this chapter, we proposed two methods of
-        balancing frequency content between data. 
-        The first one takes a theoretical approach of what we expect the data to be, and the second one takes the form of an optimization problem
-        solved by a simple iterative algorithm. This algorithm is a relatively inexpensive and effective method
-        compared to previously proposed methods of balancing frequencies between data sets. We
-        applied these methods to examples of matching seismic images of differing resolution and for
-        multicomponent image registration.
+        It is difficult to compare signals with differing frequency content because signals with differing frequencies are hard to correlate. 
+        In this chapter, we proposed two methods of balancing frequency content between data. 
+        The first one takes a theoretical approach of what we expect the data to be, and the second one takes the form of an optimization problem solved by a simple iterative algorithm. 
+        This algorithm is a relatively inexpensive and effective method compared to previously proposed methods of balancing frequencies between data sets. 
+        We applied these methods to examples of matching seismic images of differing resolution and for multicomponent image registration.
 
 
 \section{Acknowledgements}
-        We thank the sponsors of the Texas Consortium for Computational Seismology (TCCS) for their
-        financial support.
-%
-%\onecolumn
-%
-%\bibliographystyle{seg}
-%\bibliography{SEG,locfreq}
+        We thank the sponsors of the Texas Consortium for Computational Seismology (TCCS) for their financial support.
