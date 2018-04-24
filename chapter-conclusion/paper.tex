@@ -38,10 +38,122 @@ Several applications of data matching were discussed in this thesis.
 However, there are still many applications that may remain unaddressed from a data matching standpoint. 
 Problems such as seismic and well-log tying, deconvolution, automatic gain control (AGC), and surface-related multiple elimination (SRME) can also be recast as data matching problems, and looking at these problems in a new light may bring advancements to computational geophysics.
 
-\subsection{Code}
-The examples in this thesis were implemented with the Madagascar open-source software environment for reproducible computational experiments \cite[]{madagascar}.
 
+
+\appendix
+\section{Code}
+%Below is the code for the 
+The examples in this thesis were implemented with the Madagascar open-source software environment for reproducible computational experiments \cite[]{madagascar}.
 The package is available at \url{http://www.ahay.org/}.
 
 The reproducible document for the results in this thesis, including code, is available at \url{http://www.sygreer.com/research/honorsThesis}.
 However, some of the data used in this thesis are proprietary, so those results may not directly be reproducible.
+
+The scripts and programs used to produce the examples in this thesis are below.
+
+
+\definecolor{mygreen}{rgb}{0,0.5,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.5,0,0.8}
+\definecolor{c0}{rgb}{0.71,0.54,0}
+\definecolor{c1}{rgb}{0.75,0.29,0.09}
+\definecolor{c2}{rgb}{0.80,0.20,0.18}
+\definecolor{c3}{rgb}{0.15,0.54,0.82}
+\definecolor{c4}{rgb}{0.52,0.60,0}
+\definecolor{c5}{rgb}{0,0.5,0}
+\lstset{ 
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\scriptsize\ttfamily,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  commentstyle=\color{c5},    % comment style
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  language=Python,                 % the language of the code
+  deletecomment={[s]{'''}{'''}},
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{c2},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  keywords=[1]{from,for,if,in,import},
+  keywords=[2]{Flow,Fetch},
+  keywords=[3]{Result,Plot},
+  keywordstyle={\color{c0}},
+  keywordstyle=[2]{\color{blue}},
+  keywordstyle=[3]{\color{c3}},
+}
+%\lstset{language=python,numbers=left,numberstyle=\tiny,showstringspaces=false}
+
+\begin{table}[h]
+\centering
+\caption{Figures and the scripts to generate them}
+\label{my-label}
+\begin{tabular}{l|l|l}
+\hline
+        \textbf{Figures} & \textbf{Directory} & \textbf{Listings} \\ \hline 
+        \ref{fig:legacy,low-freq} & chapter-locfreq/merge/ & \ref{lst:lms}, \ref{lst:lmrp}, \ref{lst:lmrc}\\ 
+        \ref{fig:one0,one1,one2,one3}, \ref{fig:bef,aft} & chapter-background/dmExample/ & \ref{lst:dm} \\ 
+        \ref{fig:legacy,hires}, \ref{fig:nspectra,hires-smooth-spec}, \ref{fig:rect}, \ref{fig:freqdif,freqdif-filt}           & chapter-merge/apache/ & \ref{lst:mas} \\ 
+        \ref{fig:legacy,hires-agc}, \ref{fig:rect5}, \ref{fig:nspectra-orig,high-smooth-spec5}, \ref{fig:freqdif,freqdif-filt5}          & chapter-locfreq/merge/ &   \ref{lst:lms}, \ref{lst:lmrp}, \ref{lst:lmrc}\\ 
+        \ref{fig:pp,ss}, \ref{fig:before,after}         & chapter-locfreq/vecta/&  \ref{lst:lvs}, \ref{lst:lvn}, \ref{lst:lvrp}, \ref{lst:lvrc}\\ 
+        \ref{fig:all,scalar} & chapter-locfreq/convergence/&  \ref{lst:conv}\\ 
+        \ref{fig:legacy,hires,merge2-reverse}, \ref{fig:diff0,diff1}, \ref{fig:hweight,lweight-reverse}, \ref{fig:nspectra22-reverse}           & chapter-merge/apache/ & \ref{lst:mas} \\ 
+        \ref{fig:window1,window2}, \ref{fig:nspectra2} & chapter-merge/pcable/ & \ref{lst:mps} \\ 
+        \ref{fig:legacy4,hires4,merge3}  & chapter-merge/pcable2/ & \ref{lst:mp2s}, \ref{lst:mp2rp}, \ref{lst:mp2rc}\\ 
+        \ref{fig:mod,vel-migration}, \ref{fig:image0,image1}, \ref{fig:a0,rect10b}, \ref{fig:migdec-shap}, \ref{fig:image0-w3,migdec-w3,mod-w3} & chapter-merge/mighes/ & \ref{lst:hss}, \ref{lst:hsrp}, \ref{lst:hsrc}\\ 
+        \ref{fig:tf}, & chapter-merge/triop/ & \ref{lst:triop}, \ref{lst:trfu} \ref{lst:solve}\\ 
+\end{tabular}
+\end{table}
+
+\subsection{Chapter 2}
+
+\lstinputlisting[label={lst:dm},caption={chapter-background/dmExample/dmExample.py}]{../chapter-background/dmExample/dmExample.py}
+
+\subsection{Chapter 3}
+%
+%\inputdir{../chapter-locfreq/merge}
+%This chapter is split into three main projects (directories). 
+%
+%\inputdir{../chapter-merge/apache}
+%The code to generate Figures \ref{fig:legacy,hires}, \ref{fig:nspectra,hires-smooth-spec}, \ref{fig:rect}, and \ref{fig:freqdif,freqdif-filt}, which are used to demonstrate the theoretical smoothing radius, is contained with the code for Chapter 4.
+%
+%The second project is in the merge directory and includes the example with of the iterative algorithm to balance local frequency content between data sets.
+%This includes the code to generate Figures \ref{fig:legacy,hires-agc}, \ref{fig:rect5}, \ref{fig:nspectra-orig,high-smooth-spec5}, and \ref{fig:freqdif,freqdif-filt5}.
+%
+%The third project demonstrates the 
+\lstinputlisting[label={lst:lms},caption={chapter-locfreq/merge/SConstruct}]{../chapter-locfreq/merge/SConstruct}
+\lstinputlisting[label={lst:lmrp},caption={chapter-locfreq/merge/radius.py}]{../chapter-locfreq/merge/radius.py}
+\lstinputlisting[language=C,label={lst:lmrc},caption={chapter-locfreq/merge/radius.c}]{../chapter-locfreq/merge/radius.c}
+
+
+\lstinputlisting[label={lst:lvs},caption={chapter-locfreq/vecta/SConstruct}]{../chapter-locfreq/vecta/SConstruct}
+\lstinputlisting[label={lst:lvn},caption={chapter-locfreq/vecta/newwarplocfreq.py}]{../chapter-locfreq/vecta/newwarplocfreq.py}
+\lstinputlisting[label={lst:lvrp},caption={chapter-locfreq/vecta/radius2.py}]{../chapter-locfreq/vecta/radius2.py}
+\lstinputlisting[label={lst:lvrc},language=C,caption={chapter-locfreq/vecta/radius2.c}]{../chapter-locfreq/vecta/radius2.c}
+
+\lstinputlisting[label={lst:conv},caption={chapter-locfreq/convergence/plot.py}]{../chapter-locfreq/convergence/plot.py}
+
+
+\subsection{Chapter 4}
+\lstinputlisting[label={lst:mas},caption={chapter-merge/apache/SConstruct}]{../chapter-merge/apache/SConstruct}
+\lstinputlisting[label={lst:mps},caption={chapter-merge/pcable/SConstruct}]{../chapter-merge/pcable/SConstruct}
+\lstinputlisting[label={lst:mp2s},caption={chapter-merge/pcable2/SConstruct}]{../chapter-merge/pcable2/SConstruct}
+\lstinputlisting[label={lst:mp2rp},caption={chapter-merge/pcable2/radius.py}]{../chapter-merge/pcable2/radius.py}
+\lstinputlisting[language=C,label={lst:mp2rc},caption={chapter-merge/pcable2/SConstruct}]{../chapter-merge/pcable2/radius.c}
+
+
+\subsection{Chapter 5}
+\lstinputlisting[label={lst:hss},caption={chapter-mighes/sigsbee/SConstruct}]{../chapter-mighes/sigsbee/SConstruct}
+\lstinputlisting[label={lst:hsrp},caption={chapter-mighes/sigsbee/radius.py}]{../chapter-mighes/sigsbee/radius.py}
+\lstinputlisting[language=C,label={lst:hsrc},caption={chapter-mighes/sigsbee/radius.c}]{../chapter-mighes/sigsbee/radius.c}
+
+\lstinputlisting[label={lst:triop},caption={chapter-mighes/triop/triOp.py}]{../chapter-mighes/triop/triOp.py}
+\lstinputlisting[label={lst:trfu},caption={chapter-mighes/triop/trfu.py}]{../chapter-mighes/triop/trfu.py}
+\lstinputlisting[label={lst:solve},caption={chapter-mighes/triop/solve.py}]{../chapter-mighes/triop/solve.py}

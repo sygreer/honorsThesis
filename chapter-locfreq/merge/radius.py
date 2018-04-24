@@ -2,7 +2,8 @@ from rsf.proj import *
 
 def radius(high, low,               # initial high-resolution and legacy images
            niter,                   # number of corrections
-           c,                       # 'step length' for radius corrections. Can be type int or float for constant c 
+           c,                       # 'step length' for radius corrections. Can 
+                                    # be type int or float for constant c 
                                     # or type array for changing c.
            bias=-15, clip=30,       # bias and clip for display
            rect1=40, rect2=80,      # radius for local frequency calculation
@@ -30,15 +31,18 @@ def radius(high, low,               # initial high-resolution and legacy images
     freqdif = 'add scale=-1,1 ${SOURCES[1]} | put label=Frequency'
 
     def freqdifplot(num):
-        return '''grey allpos=y color=j scalebar=y mean=y title="Difference in Local Frequencies %s" 
-                  clip=%d bias=%d minval=%d maxval=%d''' %(num,clip,bias,minval,maxval) 
+        return '''grey allpos=y color=j scalebar=y mean=y 
+                  title="Difference in Local Frequencies %s" 
+                  clip=%d bias=%d minval=%d 
+                  maxval=%d''' %(num,clip,bias,minval,maxval) 
 
     specplot = '''cat axis=2 ${SOURCES[1]} | 
                   scale axis=1 | window max1=180 |
                   graph title="Normalized Spectra" label2="Amplitude" unit2=""'''
 
     def rectplot(name):
-        return 'grey color=j mean=y title="%s" scalebar=y barlabel=Radius barunit=samples'%name
+        return '''grey color=j mean=y title="%s" scalebar=y barlabel=Radius 
+                  barunit=samples'''%name
 
     smooth = 'nsmooth1 rect=${SOURCES[1]}'
 
@@ -64,7 +68,7 @@ def radius(high, low,               # initial high-resolution and legacy images
     if (theor):
         from math import pi
         Flow('rect0','low-freq high-freq','''math f1=${SOURCES[1]} 
-              output="sqrt(%g*(1/(input*input)-1/(f1*f1)))/%g" '''%(scale,2*pi*0.001))
+        output="sqrt(%g*(1/(input*input)-1/(f1*f1)))/%g"'''%(scale,2*pi*0.001))
     else:
         Flow('rect0','low-freq','math output=%f'%initial)
 
@@ -80,7 +84,8 @@ def radius(high, low,               # initial high-resolution and legacy images
     Result('high-smooth-spec0','high-smooth-spec0 low-spec',specplot)
     
     Flow('high-smooth-freq0','high-smooth0',locfreq)
-    Result('high-smooth-freq0',locfreqplot("%s Local Frequency Smoothed %d" %(titlehigh,0)))
+    Result('high-smooth-freq0',
+            locfreqplot("%s Local Frequency Smoothed %d" %(titlehigh,0)))
            
     Flow('freqdif-filt0','low-freq high-smooth-freq0',freqdif) 
     Result('freqdif-filt0',freqdifplot('0')) 
@@ -88,7 +93,8 @@ def radius(high, low,               # initial high-resolution and legacy images
     prog=Program('radius.c') 
     for i in range(1, niter+1): 
         j = i-1
-        Flow('rect%d'%i,'rect%d freqdif-filt%d %s'%(j,j,prog[0]),'./${SOURCES[2]} freq=${SOURCES[1]} c=%f'%c[j])
+        Flow('rect%d'%i,'rect%d freqdif-filt%d %s'%(j,j,prog[0]),
+             './${SOURCES[2]} freq=${SOURCES[1]} c=%f'%c[j])
         Result('rect%d'%i,rectplot("Smoothing Radius %d")%i)
         
         Flow('high-smooth%d'%i,'%s rect%d'%(high,i),smooth)
@@ -98,7 +104,8 @@ def radius(high, low,               # initial high-resolution and legacy images
         Result('high-smooth-spec%d'%i,'high-smooth-spec%d low-spec'%i,specplot)
         
         Flow('high-smooth-freq%d'%i,'high-smooth%d'%i,locfreq)
-        Result('high-smooth-freq%d'%i,locfreqplot('%s Local Frequency Smoothed %d'%(titlehigh,i)))
+        Result('high-smooth-freq%d'%i,
+               locfreqplot('%s Local Frequency Smoothed %d'%(titlehigh,i)))
 
         Flow('freqdif-filt%d'%i,'low-freq high-smooth-freq%d'%i,freqdif)
         Result('freqdif-filt%d'%i,freqdifplot(str(i)))

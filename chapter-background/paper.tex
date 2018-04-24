@@ -32,8 +32,8 @@ In this example, we want to find a transformation, or a set of transformations, 
 I use the three data matching operators by first filtering (Figure \ref{fig:one1}), then scaling (Figure \ref{fig:one2}), and finally shifting (Figure \ref{fig:one3}).
 The three operations are described in more detail in the following sections.
 
-\inputdir{.}
-\multiplot{4}{one0,one1,one2,one3}{width=1.0\columnwidth}{(a) Two traces that need to be matched---we will match the red trace to the black trace. (b) Red trace after filtering. (c)  Red trace from (b) after scaling. (d) The final result: red trace from (c) after shifting, which now better matches with the black trace. The amount and order in which these operations is applied affects the final result (Figure \ref{fig:before,after}).}
+\inputdir{dmExample}
+\multiplot{4}{one0,one1,one2,one3}{width=1.0\columnwidth}{(a) Two traces that need to be matched---we will match the red trace to the black trace. (b) Red trace after filtering. (c)  Red trace from (b) after scaling. (d) The final result: red trace from (c) after shifting, which now better matches with the black trace. The amount and order in which these operations is applied affects the final result (Figure \ref{fig:bef,aft}).}
 
 
 
@@ -103,9 +103,9 @@ After correcting for frequency variations, amplitude variations, and time shifts
 In some cases, multiple rounds of applying these operators and in different orders may be beneficial for the best match.
 These three operators are noncommutative, so the order in which they are applied matters.
 Applying filtering before scaling produces a different result from applying scaling before filtering. 
-An illustration of this property is shown in Figure \ref{fig:before,after}.
+An illustration of this property is shown in Figure \ref{fig:bef,aft}.
 
-\multiplot{2}{before,after}{width=1.0\columnwidth}{(a) A lower-resolution seismic trace (black) and a higher-resolution seismic trace (red) acquired over the same area. (b) Data matching operations are noncommutative---the order in which they are applied matters. When matching the red trace to the black trace, the green trace had first smoothing, then amplitude balancing, and finally shifting; the yellow trace had first amplitude balancing, then smoothing, and finally shifting. The operation order matters and affects the final result.}
+\multiplot{2}{bef,aft}{width=1.0\columnwidth}{(a) A lower-resolution seismic trace (black) and a higher-resolution seismic trace (red) acquired over the same area. (b) Data matching operations are noncommutative---the order in which they are applied matters. When matching the red trace to the black trace, the green trace had first smoothing, then amplitude balancing, and finally shifting; the yellow trace had first amplitude balancing, then smoothing, and finally shifting. The operation order matters and affects the final result.}
 
 \begin{table}[h]
 \centering

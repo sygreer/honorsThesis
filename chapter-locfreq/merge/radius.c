@@ -1,5 +1,4 @@
 /* smoothing radius (min = 1) */
-
 #include <rsf.h>
 #include <math.h>
 
@@ -53,5 +52,3 @@ int main (int argc, char* argv[])
     sf_floatwrite(rad,n12,out);
     exit(0);
 }
-
-

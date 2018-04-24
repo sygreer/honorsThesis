@@ -1,5 +1,6 @@
 from rsf.proj import *
 from rsf.recipes.beg import server as private
+import newwarplocfreq
 
 ###########################################################
 #  Modified from $RSFSRC/book/tccs/ltft/vecta/SConstruct  #
@@ -57,8 +58,7 @@ Result('vnails','fit nails','Overlay')
 
 Flow('fit0','fit','math output=input-x1 | spray o=0 d=1 n=471')
 
-import newwarp_locfreq
-newwarp_locfreq.nwarp2('vec','pp','ss','fit0',
+newwarplocfreq.nwarp2('vec','pp','ss','fit0',
                        nx=471,
                        inter=5,
                        tmax=1.5,
@@ -81,19 +81,11 @@ newwarp_locfreq.nwarp2('vec','pp','ss','fit0',
 Result('pi','ppi','Overlay')
 Result('si','vec-si-0','Overlay')
 
-
-box = '''
-      box x0=%g y0=%g label="%s" xt=%g yt=%g lab_fat=3
-      '''
+box = 'box x0=%g y0=%g label="%s" xt=%g yt=%g lab_fat=3'
 x = 201
 y = 242
 w = 2
 w1= 9
-
-#x = 200
-#y = 245
-#w = 2
-#w1= 6
 
 Plot('label01',None,box % (8.2,4.5,"A",0.5,-0.5))
 Plot('label02',None,box % (8.2,4.5,"B",0.5,-0.5))
@@ -106,13 +98,6 @@ Plot('frame','frame.asc',
      graph min1=199 max1=204 min2=233 max2=254 pad=n plotfat=10 plotcol=3
      wantaxis=n wanttitle=n 
      ''')
-     #wantaxis=n wanttitle=n screenratio=0.6 screenht=8
-
-#Result('before','vec-in0-0 frame label01','Overlay')
-#Result('after','vec-in1-1 frame label02','Overlay')
-
-#Result('before','vec-in0-0 frame','Overlay')
-#Result('after','vec-in1-1 frame','Overlay')
 
 Result('before','vec-in0-0','Overlay')
 Result('after','vec-in1-1','Overlay')
