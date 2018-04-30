@@ -5,9 +5,7 @@
 \subsection{Summary}
 
 In this thesis, I discussed several methods and applications of data matching in seismic data analysis.
-
 Chapter 2 focuses on introducing the three data matching operators that are used in this thesis---shifting, scaling, and filtering.
-
 Chapter 3 introduces different methods of frequency balancing using non-stationary smoothing. 
 The first method to find the non-stationary smoothing {\em radius}, or number of samples each data point is averaged over with a triangle weight, took a theoretical approach based off of the assumption that the data we observe can be modeled by a summation of Ricker wavelets.
 This method worked well in certain situations, but was not robust enough to work for any given data set.
@@ -22,7 +20,7 @@ First, the method is demonstrated on a 2D line from the Gulf of Mexico.
 Then, the method is applied to a 3D seismic volume from a different part of the Gulf of Mexico.
 
 Chapter 5 discusses another application of improving migration resolution by approximating the least-squares Hessian using non-stationary data matching operations.
-An approximation to the least-squares Hessian can calculated by solving a data matching problem between two conventionally migrated images, and can be represented by the combination of amplitude and frequency balancing operations.
+An approximation to the least-squares Hessian can be calculated by solving a data matching problem between two conventionally migrated images, and the Hessian can be represented by the combination of amplitude and frequency balancing operations.
 An example is applied to a 2D synthetic Sigsbee data set.
 
 \subsection{Future work}
@@ -32,11 +30,11 @@ It also could benefit by comparing the results of the proposed approach taken in
 Another extension of this data matching procedure may be to incorporate
 %Another component to data matching may incorporate 
 the phase of the signal to be matched. 
-Negligible improvements were made when trying to incorporate phase corrections into the high-resolution and legacy data matching problem of chapter 4, but other data matching problems may benefit from these corrections.
+Negligible improvements were made when trying to incorporate phase corrections into the high-resolution and legacy data matching problem of chapter 4, but other data matching problems could benefit from these corrections.
 
 Several applications of data matching were discussed in this thesis. 
-However, there are still many applications that may remain unaddressed from a data matching standpoint. 
-Problems such as seismic and well-log tying, deconvolution, automatic gain control (AGC), and surface-related multiple elimination (SRME) can also be recast as data matching problems, and looking at these problems in a new light may bring advancements to computational geophysics.
+However, many applications remain unaddressed from a data matching standpoint. 
+Problems such as seismic and well-log tying, deconvolution, automatic gain control (AGC), and surface-related multiple elimination (SRME) can also be recast as data matching problems. Looking at these problems in a new light may bring advancements to computational geophysics.
 
 
 
@@ -111,12 +109,13 @@ The scripts and programs used to produce the examples in this thesis are below.
         \ref{fig:tf}, & chapter-merge/triop/ & \ref{lst:triop}, \ref{lst:trfu} \ref{lst:solve}\\ 
 \end{tabular}
 \end{table}
+For brevity in this thesis, code is only included for one example of the main frequency balancing algorithm presented in chapter 3.
 
-\subsection{Chapter 2}
-
-\lstinputlisting[label={lst:dm},caption={chapter-background/dmExample/dmExample.py}]{../chapter-background/dmExample/dmExample.py}
-
-\subsection{Chapter 3}
+%\subsection{Chapter 2}
+%
+%\lstinputlisting[label={lst:dm},caption={chapter-background/dmExample/dmExample.py}]{../chapter-background/dmExample/dmExample.py}
+%
+%\subsection{Chapter 3}
 %
 %\inputdir{../chapter-locfreq/merge}
 %This chapter is split into three main projects (directories). 
@@ -132,28 +131,29 @@ The scripts and programs used to produce the examples in this thesis are below.
 \lstinputlisting[label={lst:lmrp},caption={chapter-locfreq/merge/radius.py}]{../chapter-locfreq/merge/radius.py}
 \lstinputlisting[language=C,label={lst:lmrc},caption={chapter-locfreq/merge/radius.c}]{../chapter-locfreq/merge/radius.c}
 
-
-\lstinputlisting[label={lst:lvs},caption={chapter-locfreq/vecta/SConstruct}]{../chapter-locfreq/vecta/SConstruct}
-\lstinputlisting[label={lst:lvn},caption={chapter-locfreq/vecta/newwarplocfreq.py}]{../chapter-locfreq/vecta/newwarplocfreq.py}
-\lstinputlisting[label={lst:lvrp},caption={chapter-locfreq/vecta/radius2.py}]{../chapter-locfreq/vecta/radius2.py}
-\lstinputlisting[label={lst:lvrc},language=C,caption={chapter-locfreq/vecta/radius2.c}]{../chapter-locfreq/vecta/radius2.c}
-
-\lstinputlisting[label={lst:conv},caption={chapter-locfreq/convergence/plot.py}]{../chapter-locfreq/convergence/plot.py}
-
-
-\subsection{Chapter 4}
-\lstinputlisting[label={lst:mas},caption={chapter-merge/apache/SConstruct}]{../chapter-merge/apache/SConstruct}
-\lstinputlisting[label={lst:mps},caption={chapter-merge/pcable/SConstruct}]{../chapter-merge/pcable/SConstruct}
-\lstinputlisting[label={lst:mp2s},caption={chapter-merge/pcable2/SConstruct}]{../chapter-merge/pcable2/SConstruct}
-\lstinputlisting[label={lst:mp2rp},caption={chapter-merge/pcable2/radius.py}]{../chapter-merge/pcable2/radius.py}
-\lstinputlisting[language=C,label={lst:mp2rc},caption={chapter-merge/pcable2/SConstruct}]{../chapter-merge/pcable2/radius.c}
-
-
-\subsection{Chapter 5}
-\lstinputlisting[label={lst:hss},caption={chapter-mighes/sigsbee/SConstruct}]{../chapter-mighes/sigsbee/SConstruct}
-\lstinputlisting[label={lst:hsrp},caption={chapter-mighes/sigsbee/radius.py}]{../chapter-mighes/sigsbee/radius.py}
-\lstinputlisting[language=C,label={lst:hsrc},caption={chapter-mighes/sigsbee/radius.c}]{../chapter-mighes/sigsbee/radius.c}
-
-\lstinputlisting[label={lst:triop},caption={chapter-mighes/triop/triOp.py}]{../chapter-mighes/triop/triOp.py}
-\lstinputlisting[label={lst:trfu},caption={chapter-mighes/triop/trfu.py}]{../chapter-mighes/triop/trfu.py}
-\lstinputlisting[label={lst:solve},caption={chapter-mighes/triop/solve.py}]{../chapter-mighes/triop/solve.py}
+%
+%
+%\lstinputlisting[label={lst:lvs},caption={chapter-locfreq/vecta/SConstruct}]{../chapter-locfreq/vecta/SConstruct}
+%\lstinputlisting[label={lst:lvn},caption={chapter-locfreq/vecta/newwarplocfreq.py}]{../chapter-locfreq/vecta/newwarplocfreq.py}
+%\lstinputlisting[label={lst:lvrp},caption={chapter-locfreq/vecta/radius2.py}]{../chapter-locfreq/vecta/radius2.py}
+%\lstinputlisting[label={lst:lvrc},language=C,caption={chapter-locfreq/vecta/radius2.c}]{../chapter-locfreq/vecta/radius2.c}
+%
+%\lstinputlisting[label={lst:conv},caption={chapter-locfreq/convergence/plot.py}]{../chapter-locfreq/convergence/plot.py}
+%
+%
+%\subsection{Chapter 4}
+%\lstinputlisting[label={lst:mas},caption={chapter-merge/apache/SConstruct}]{../chapter-merge/apache/SConstruct}
+%\lstinputlisting[label={lst:mps},caption={chapter-merge/pcable/SConstruct}]{../chapter-merge/pcable/SConstruct}
+%\lstinputlisting[label={lst:mp2s},caption={chapter-merge/pcable2/SConstruct}]{../chapter-merge/pcable2/SConstruct}
+%\lstinputlisting[label={lst:mp2rp},caption={chapter-merge/pcable2/radius.py}]{../chapter-merge/pcable2/radius.py}
+%\lstinputlisting[language=C,label={lst:mp2rc},caption={chapter-merge/pcable2/SConstruct}]{../chapter-merge/pcable2/radius.c}
+%
+%
+%\subsection{Chapter 5}
+%\lstinputlisting[label={lst:hss},caption={chapter-mighes/sigsbee/SConstruct}]{../chapter-mighes/sigsbee/SConstruct}
+%\lstinputlisting[label={lst:hsrp},caption={chapter-mighes/sigsbee/radius.py}]{../chapter-mighes/sigsbee/radius.py}
+%\lstinputlisting[language=C,label={lst:hsrc},caption={chapter-mighes/sigsbee/radius.c}]{../chapter-mighes/sigsbee/radius.c}
+%
+%\lstinputlisting[label={lst:triop},caption={chapter-mighes/triop/triOp.py}]{../chapter-mighes/triop/triOp.py}
+%\lstinputlisting[label={lst:trfu},caption={chapter-mighes/triop/trfu.py}]{../chapter-mighes/triop/trfu.py}
+%\lstinputlisting[label={lst:solve},caption={chapter-mighes/triop/solve.py}]{../chapter-mighes/triop/solve.py}

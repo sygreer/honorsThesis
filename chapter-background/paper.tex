@@ -8,14 +8,14 @@ For example, Figure \ref{fig:legacy,low-freq} shows a sample seismic image and i
 %These non-stationary variations mean that, in a given data set, different 
 Data matching problems involve finding some transformation, or set of transformations, that can be applied to one data set to best match some attribute with another data set.
 In data matching applications, in particular, it is crucial to acknowledge the non-stationary variations present in seismic data.
-Therefore, any transformations we may apply in a data matching problem must be variant in all data dimensions to account for these non-stationary variations.
+Therefore, any transformations we might apply in a data matching problem must be variant in all data dimensions to account for these non-stationary variations.
 
 Local seismic attributes are useful in the analysis of these non-stationary variations that are naturally present in seismic data \cite{attr}.
 The calculation of these attributes uses iterative inversion with shaping regularization \cite{shap} to measure signal characteristics in local regions of data, rather than specifying windows or looking at instantaneous attributes.
-For the procedures described in this thesis, local attributes are better-suited attributes than instantaneous attributes.
+For the procedures described in this thesis, local attributes are more appropriate than instantaneous attributes.
 Take, for example, local frequency (Figure \ref{fig:legacy,low-freq}), as opposed to instantaneous frequency.
 Local frequency allows the comparison of frequency content in a local region of samples, as opposed to instantaneous frequency, which allows for a point by point comparison of frequency values between images. 
-Because the corresponding reflections between images may not be precisely aligned in time, using the local frequency attribute to balance frequency content between images would allow for more accurate frequency balancing than instantaneous frequency. 
+Because the corresponding reflections between images might not be precisely aligned in time, using the local frequency attribute to balance frequency content between images would allow for more accurate frequency balancing than instantaneous frequency. 
 Additionally, local frequency is a more geologically accurate attribute than instantaneous frequency because it honors time-frequency uncertainty and does not contain physically unrealistic negative or extremely high frequency values \cite[]{attr}.
 
 \multiplot{2}{legacy,low-freq}{width=0.47\columnwidth}{A seismic image (a) and its local frequency content (b). Because its local frequency varies both spatially and temporally, we can say its frequency content is {\it non-stationary}.}
@@ -23,7 +23,7 @@ Additionally, local frequency is a more geologically accurate attribute than ins
 In this thesis, I propose solving data matching problems by balancing smoothly varying non-stationary attributes, such as local seismic attributes, between two data sets.
 %local seismic attributes between data sets.
 This is done using three primary data matching operations---filtering, scaling, and shifting---to effectively balance these attributes across seismic data sets.
-These operations are applied to different data sets to correctly match them for analysis or further processing.
+These operations are applied to different data sets to match them correctly for analysis or further processing.
 
 %These applications can be solved by specifying and applying the three previously stated data matching operators: filtering, scaling, and shifting.
 To demonstrate the three matching operations in action, I apply them consecutively to an example 2D trace shown in Figure \ref{fig:one0}.
@@ -43,10 +43,10 @@ The three operations are described in more detail in the following sections.
 Perhaps one of the most visibly obvious differences between data sets comes from differences in frequency content.
 For example, Figure \ref{fig:one0} shows two traces that need to be matched; the red trace has visibly higher frequency content than the black trace which makes it difficult to observe that they may both contain data from the same model.
 This makes the correlation of these two signals, both visually and computationally, difficult as they have information in different frequency bands.
-In this situation, we want to remove the higher frequency variations from the red trace to match the lower frequency content with the black trace, since the high frequency content is not physically present in the black trace.
+In this situation, we want to remove the higher frequency variations from the red trace to match the lower frequency content with the black trace because the high frequency content is not physically present in the black trace.
 
 There are several ways to do this.
-An naive first approach would be to apply a bandpass filter to the red trace such that the passband covers only frequencies that are present in the black trace.
+A na\"ive first approach would be to apply a bandpass filter to the red trace such that the passband covers only frequencies that are present in the black trace.
 However, this stationary operation does not take into account the non-stationary frequency variations that may be naturally present in the data.
 In order to properly match the data in frequency content, we propose balancing local frequency content between data sets.
 
@@ -62,10 +62,10 @@ Figure \ref{fig:one1} shows the two traces after balancing the local frequency c
 \section{Scaling}
 The second primary data matching operation is scaling. 
 Amplitudes of the data we are trying to match may not be initially correct---scaling attempts to balance the amplitudes between these data.
-Scaling is also a linear operation, and can be thought of as a diagonal operation; if the scaling operator is represented by a matrix multiplication to the data vector, this matrix only contains terms along the diagonal.
+Scaling is also a linear operation and can be thought of as a diagonal operation; if the scaling operator is represented by a matrix multiplication to the data vector, this matrix only contains terms along the diagonal.
 
 In this thesis, the diagonal scaling operator is found by first calculating the amplitude envelope of the data that need to be matched.
-Then, the scaling weight is calculated by smoothly dividing the amplitude envelopes of the two traces, and represent the diagonal elements of the scaling operator.
+Then, the scaling weight is calculated by smoothly dividing the amplitude envelopes of the two traces and represents the diagonal elements of the scaling operator.
 %The result of 
 
 \section{Shifting}
@@ -73,13 +73,13 @@ If two events are slightly misaligned in time, finding the transformation that c
 Dynamic time warping is a common algorithm used for the alignment of events of two time series, both for geophysical and other applications, as diverse as speech recognition and finance \cite[]{herrera2012,hale2013,dtw,finance}.
 
 In this thesis, I calculate the shifting operator by finding the time shifts that maximize local similarity between the two data sets.
-Local similarity extends the concept of local seismic attributes to global correlation coefficients, and is effective for measuring the match of seismic events in a local region of samples \cite[]{attr}.
+Local similarity extends the concept of local seismic attributes to global correlation coefficients and is effective for measuring the match of seismic events in a local region of samples \cite[]{attr}.
 Unlike filtering and scaling, shifting is a non-linear transformation.
 %The time shift calculated is 
 
 In certain situations, these data must be correctly aligned in space instead of time; for example, in a depth-migrated image.
 In these cases, {\em time} shift is a misnomer. 
-However, since the data we are typically dealing with are time series, the shifting operation that we find and apply is considered a function of time.
+However, because the data we are typically dealing with are time series, the shifting operation that we find and apply is considered a function of time.
 
 The result after finding and applying the time shift to the red trace to match it to the black trace is in Figure \ref{fig:one3}.
 This shifting operation is discussed in more detail in chapters 3 and 4.
@@ -120,6 +120,6 @@ An illustration of this property is shown in Figure \ref{fig:bef,aft}.
 \end{table}
 
 A summary of the three data matching operations is shown in Table \ref{op}.
-Both scaling and filtering are linear operations, while shifting is generally a non-linear operation.
+Both scaling and filtering are linear operations, whereas shifting is generally a non-linear operation.
 Additionally, as scaling is to weighting in the time domain, filtering is to weighting in the Fourier domain.
 The next chapter discusses a few methods and examples of filtering, or frequency balancing, between two data sets.

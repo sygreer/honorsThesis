@@ -32,7 +32,7 @@
     Many previous methods of seismic data merging have been developed for the purpose of increasing the spatial coverage of the merged volume by combining data from partially overlapping areas. 
     This usually involves steps such as rebinning for data alignment, along with spectral and phase matching.
     As a result, both the initial and resultant merged images poses similar signal characteristics, most notably spectral content \cite[]{kavery,gabor,supermerge}. 
-    However, previously \cite{freqmerge} are successful in applying a frequency domain merge to two separate seismic volumes over the same area to broaden the effective bandwidth.
+    However, previously \cite{freqmerge} were successful in applying a frequency domain merge to two separate seismic volumes over the same area to broaden the effective bandwidth.
     
     In this chapter, we consider the problem of matching seismic images obtained in the same area with different resolution. 
     Using techniques borrowed from multicomponent image processing \cite[]{warp}, we propose a multistep approach. 
@@ -52,7 +52,7 @@
 \section{Method}
     
     The initial legacy and high-resolution example images are shown in Figure~\ref{fig:legacy,hires,merge2-reverse}. 
-    They both underwent standard marine processing flows, and are assumed to be optimally processed.
+    They both underwent standard marine processing flows and are assumed to be optimally processed.
     The images show similar structures, particularly at shallow depths, but with strikingly different resolution. 
     The main difference comes from the broader frequency bandwidth of the high-resolution image in comparison with that of the legacy image. 
     Therefore, our first step in comparing the two images is balancing their spectral content.
@@ -131,7 +131,7 @@
     This method works well for simple data sets with overlapping frequency content. 
     However, more complicated data sets, as seen in the next example, may require additional steps for successful frequency balancing.
     
-    In addition to frequency balancing, we initially attempted accounting for wavelet phase differences between data sets at this step. 
+    In addition to frequency balancing, we initially attempted to account for wavelet phase differences between data sets at this step. 
     However, we saw this had a negligible impact on the final result, so we decided not to include it in this method.
     
     % \multiplot{2}{freqdif,freqdif-filt}{width=0.65\columnwidth}{Difference in local frequencies between the legacy and high-resolution images before (a) and after (b) balancing their frequency content by non-stationary smoothing.} 
@@ -151,7 +151,7 @@
 
 \subsection{Creating the blended image}
     
-    Since the high-resolution and legacy images contain information about the same subsurface, we can attempt to create an optimal image of this area by blending the two images together to combine the strengths of each while minimizing their weaknesses.
+    Because the high-resolution and legacy images contain information about the same subsurface, we can attempt to create an optimal image of this area by blending the two images together to combine the strengths of each while minimizing their weaknesses.
     We can achieve this by imposing two conditions. 
     First, the blended image should match the high-resolution image, particularly in the shallow part. 
     Second, after smoothing with the non-stationary smoothing operator, the blended image should match the legacy image. 
@@ -182,7 +182,7 @@
     which makes it evident that the merged image is simply the high-resolution image with some changes.
     
     The weights, $\mathbf{W_h}$ and $\mathbf{W_l}$, are applied to the images to bring out the desired qualities from each image. 
-    For example, since we prefer the high-resolution image in the shallow section, we weight it stronger there and gradually taper the weight to preference the legacy image with depth. 
+    For example, because we prefer the high-resolution image in the shallow section, we weight it more significantly there and gradually taper the weight to preference the legacy image with depth. 
     In addition, we estimate the legacy weight, $\mathbf{W_l}$, to balance the legacy image's amplitudes with respect to the high-resolution image. 
     The specific values we used for the weights are shown in Figure \ref{fig:hweight,lweight-reverse}.
     
@@ -219,7 +219,7 @@
     We chose to spatially down-sample the high-resolution image to match the legacy image as opposed to interpolating the legacy image to the high-resolution image's spatial grid to prevent potentially introducing inaccurate data in the merged image.
     
     There is a definite separation in frequency content when comparing the legacy and high-resolution images (Figure \ref{fig:nspectra2}). 
-    Because there is not much overlap in frequency bandwidth, balancing their spectral content is challenging. 
+    Because of little overlap in frequency bandwidth, balancing their spectral content is challenging. 
     In addition, a primary assumption made in deriving the theoretical smoothing radius (equation \ref{eq:rad}) is that the signal is modeled by a summation of Ricker wavelets, which may not be a correct assumption. 
     As a result, additional steps must be taken beyond applying the smoothing specified by equation~(\ref{eq:rad}) to ensure matching frequency content. 
     \plot{nspectra2}{width=0.75\columnwidth}{The spectral content of the entire image display of the legacy (red dashed), high-resolution (blue dotted), and resultant merged (magenta solid) images for the second data set.}

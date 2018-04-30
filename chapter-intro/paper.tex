@@ -6,12 +6,12 @@
 Data matching is a conceptually simple problem that is present in many computational geophysics applications. 
 Essentially, given two data sets, data matching can be thought of as finding the transformation from one data set to the other. 
 This is useful in applications such as multi-component seismic image registration, where two separate seismic images, one P-wave image and one S- wave image, are acquired over the same area. 
-These must be properly matched, as the two images are not temporally aligned and have different frequency and amplitude content, in order for them to be directly compared and interpreted. 
+These must be matched properly, as the two images are not temporally aligned and have different frequency and amplitude content, in order for them to be directly compared and interpreted. 
 %Many other examples of data matching are prevalent in geophysical applications, such as time-lapse image registration, seismic and well-log tying, deconvolution, and surface-related multiple elimination.
 
-Many other geophysics applications can be addressed from a data matching standpoint, and fall under a few main categories.
+Many other geophysics applications can be addressed from a data matching standpoint and fall under a few main categories.
 Applications are present for data of different physics, such as tying synthetic seismograms from well log data to surface seismic data \cite[]{herrera, bader} and multicomponent seismic image registration \cite[]{multi,warp,hardage}, which is discussed in chapter 3.
-Other problems consist of matching differently acquired data, such time-lapse image registration \cite[]{timelapse} and merging legacy and high-resolution seismic data \cite[]{merge}, which is a primary application in this thesis and is addressed in chapter 4.
+Other problems consist of matching differently acquired data, such as time-lapse image registration \cite[]{timelapse} and merging legacy and high-resolution seismic data \cite[]{merge}, which is a primary application in this thesis and is addressed in chapter 4.
 Data matching problems are also present for matching data and ideal models, such as in deconvolution or approximating the inverse Hessian to improve migration resolution \cite[]{migdec,rtmmf,mighess}, which is discussed further in chapter 5.
 An approach to these many data matching problems is to find the operation to match the data using a combination of three data matching operations---filtering, scaling, and shifting.
 %In this thesis, I will outline several methods and applications of seismic data matching, and introduce a new method for matching frequency content between data sets.
@@ -21,20 +21,20 @@ In this thesis, I will discuss these three data matching operators, outline seve
 The primary inspiration for much of the work in this thesis comes from the example of matching and merging high-resolution and legacy seismic images, as discussed in \cite{merge2} and \cite{merge}.
 In this example, two seismic data sets, each acquired over the same area but with different technologies, are first matched in frequency, amplitude, and time, before being merged together to produce a third image.
 This new image includes the best signal characteristics from the two initial images while minimizing their weaknesses.
-Much of the theory behind Chapter 3 was developed in application to this example, but was later extended to other examples.
-As a result, I will be using data from this application throughout much of this thesis.
+Much of the theory behind Chapter 3 was developed in application to this example but was later extended to other examples.
+As a result, I use data from this application throughout much of this thesis.
 
-This thesis contains two primary data sets that I will be referring to. 
+This thesis contains two primary data sets to which I refer. 
 The first pair, henceforth called the {\it Apache} data sets, are two 2D lines, acquired over the same area but with different methods, from the Gulf of Mexico. 
 These two images will always be plotted in the {\em seismic} color map.
 
 The second pair, the {\em P-cable} data sets, are two 3D volumes, acquired over the same area but with different methods, from a different area from the {\em Apache} data sets in the Gulf of Mexico \cite[]{pcable,data}.
 These two images will always be plotted in grayscale.
-In parts of this thesis, I will show a 2D line from this 3D data set for simplicity of plotting.
+In parts of this thesis, I show a 2D line from this 3D data set for simplicity of plotting.
 
 Two other data sets, both 2D, were used in this paper. 
 In chapter 3, I use two multi-component images to demonstrate an adaptation for the proposed frequency balancing algorithm in an application of multi-component image registration \cite[]{attr}.
-In chapter 5, I use the Sigsbee synthetic data set \cite[]{sigsbee} in application of improving migration resolution using non-stationary matching.
+In chapter 5, I use the Sigsbee synthetic data set \cite[]{sigsbee} in the application of improving migration resolution using non-stationary matching.
 
 This thesis is organized as follows.
 In the second chapter, I overview the basics behind the three data matching operations---scaling, shifting, and filtering.
