@@ -1,8 +1,10 @@
 \title{Background}
 \author{Sarah Yvonne Greer}
+\label{ch:chapter-background}
+
 \maketitle
 \inputdir{../chapter-locfreq/merge}
-Seismic data contain fundamentally non-stationary variations in attributes such as frequency and amplitude content.
+Seismic data exhibit fundamentally non-stationary variations in attributes such as frequency and amplitude content.
 For example, Figure \ref{fig:legacy,low-freq} shows a sample seismic image and its local frequency content \cite[]{locfreq}.
 %Non-stationary, or spatially and temporally variant, changes in these data can make the comparison of two data sets difficult.
 %These non-stationary variations mean that, in a given data set, different 
@@ -10,15 +12,15 @@ Data matching problems involve finding some transformation, or set of transforma
 In data matching applications, in particular, it is crucial to acknowledge the non-stationary variations present in seismic data.
 Therefore, any transformations we might apply in a data matching problem must be variant in all data dimensions to account for these non-stationary variations.
 
-Local seismic attributes are useful in the analysis of these non-stationary variations that are naturally present in seismic data \cite{attr}.
-The calculation of these attributes uses iterative inversion with shaping regularization \cite{shap} to measure signal characteristics in local regions of data, rather than specifying windows or looking at instantaneous attributes.
+Local seismic attributes are useful in the analysis of these non-stationary variations \cite[]{attr}.
+The calculation of these attributes uses iterative inversion with shaping regularization \cite[]{shap} to measure signal characteristics in local regions of data, rather than specifying windows or looking at instantaneous attributes.
 For the procedures described in this thesis, local attributes are more appropriate than instantaneous attributes.
 Take, for example, local frequency (Figure \ref{fig:legacy,low-freq}), as opposed to instantaneous frequency.
-Local frequency allows the comparison of frequency content in a local region of samples, as opposed to instantaneous frequency, which allows for a point by point comparison of frequency values between images. 
+Local frequency allows the comparison of frequency content in a local region of samples, as opposed to instantaneous frequency, which attempts to provide a point by point comparison of frequency values between images. 
 Because the corresponding reflections between images might not be precisely aligned in time, using the local frequency attribute to balance frequency content between images would allow for more accurate frequency balancing than instantaneous frequency. 
-Additionally, local frequency is a more geologically accurate attribute than instantaneous frequency because it honors time-frequency uncertainty and does not contain physically unrealistic negative or extremely high frequency values \cite[]{attr}.
+Additionally, local frequency is a more geologically accurate attribute than instantaneous frequency because it honors time-frequency uncertainty and does not contain physically unrealistic negative or unrealistic high frequency values \cite[]{attr}.
 
-\multiplot{2}{legacy,low-freq}{width=0.47\columnwidth}{A seismic image (a) and its local frequency content (b). Because its local frequency varies both spatially and temporally, we can say its frequency content is {\it non-stationary}.}
+\multiplot{2}{legacy,low-freq}{width=0.47\columnwidth}{A seismic image (a) and its local frequency content (b). Because its local frequency varies both spatially and temporally, we can say its frequency content is smoothly {\it non-stationary}.}
 
 In this thesis, I propose solving data matching problems by balancing smoothly varying non-stationary attributes, such as local seismic attributes, between two data sets.
 %local seismic attributes between data sets.
@@ -26,34 +28,32 @@ This is done using three primary data matching operations---filtering, scaling, 
 These operations are applied to different data sets to match them correctly for analysis or further processing.
 
 %These applications can be solved by specifying and applying the three previously stated data matching operators: filtering, scaling, and shifting.
-To demonstrate the three matching operations in action, I apply them consecutively to an example 2D trace shown in Figure \ref{fig:one0}.
+To demonstrate the three matching operations in action, I apply them consecutively to an example trace shown in Figure \ref{fig:one0}.
 The data used in this example comes from a line from the {\em P-cable} data sets.
 In this example, we want to find a transformation, or a set of transformations, to apply to the red trace to match with the black trace.
 I use the three data matching operators by first filtering (Figure \ref{fig:one1}), then scaling (Figure \ref{fig:one2}), and finally shifting (Figure \ref{fig:one3}).
-The three operations are described in more detail in the following sections.
+These three operations are described in more detail in the following sections.
 
 \inputdir{dmExample}
 \multiplot{4}{one0,one1,one2,one3}{width=1.0\columnwidth}{(a) Two traces that need to be matched---we will match the red trace to the black trace. (b) Red trace after filtering. (c)  Red trace from (b) after scaling. (d) The final result: red trace from (c) after shifting, which now better matches with the black trace. The amount and order in which these operations is applied affects the final result (Figure \ref{fig:bef,aft}).}
 
 
-
-
-
 \section{Filtering}
-Perhaps one of the most visibly obvious differences between data sets comes from differences in frequency content.
-For example, Figure \ref{fig:one0} shows two traces that need to be matched; the red trace has visibly higher frequency content than the black trace which makes it difficult to observe that they may both contain data from the same model.
+Perhaps one of the most visibly obvious differences between data sets comes from their difference in frequency content.
+For example, Figure \ref{fig:one0} shows two traces that need to be matched; the red trace has visibly higher frequencies than the black trace which makes it difficult to observe that they may both contain data from the same model.
 This makes the correlation of these two signals, both visually and computationally, difficult as they have information in different frequency bands.
-In this situation, we want to remove the higher frequency variations from the red trace to match the lower frequency content with the black trace because the high frequency content is not physically present in the black trace.
+In this situation, we want to remove the higher frequency variations from the red trace to match the lower frequency content of the black trace.
+%because the high frequency content is not physically present in the black trace.
 
 There are several ways to do this.
 A na\"ive first approach would be to apply a bandpass filter to the red trace such that the passband covers only frequencies that are present in the black trace.
 However, this stationary operation does not take into account the non-stationary frequency variations that may be naturally present in the data.
 In order to properly match the data in frequency content, we propose balancing local frequency content between data sets.
 
-We instead do this by applying a non-stationary triangle smoothing operator to the red trace to match local frequency content with the black trace.
+We can do this by applying a non-stationary triangle smoothing operator to the red trace to match the local frequency content of the black trace.
 We define the {\em radius} of this operator as the number of samples in a specified dimension that are averaged over in a triangle weight.
 We allow the radius to vary in all dimensions to account for the potential non-stationary frequency variations present in the data.
-This is a linear operation---if we represent the filtering operation by a matrix applied to the trace represented by a vector, the matrix would be diagonally banded, where the size of the band at a particular index is related to the size of the smoothing radius at that point.
+This is a linear operation---if we represent the filtering operation by a matrix applied to the trace represented by a vector, the matrix would be diagonally banded, where the width of the band at a particular index is related to the size of the smoothing radius at that point.
 
 Chapter 3 is dedicated to the discussion of how to find this frequency balancing operator.
 Figure \ref{fig:one1} shows the two traces after balancing the local frequency content of the red trace to match the black trace.
@@ -61,11 +61,11 @@ Figure \ref{fig:one1} shows the two traces after balancing the local frequency c
 
 \section{Scaling}
 The second primary data matching operation is scaling. 
-Amplitudes of the data we are trying to match may not be initially correct---scaling attempts to balance the amplitudes between these data.
+Amplitudes of the data we are trying to match may not be initially equivalent---scaling attempts to balance the amplitudes between these data.
 Scaling is also a linear operation and can be thought of as a diagonal operation; if the scaling operator is represented by a matrix multiplication to the data vector, this matrix only contains terms along the diagonal.
 
 In this thesis, the diagonal scaling operator is found by first calculating the amplitude envelope of the data that need to be matched.
-Then, the scaling weight is calculated by smoothly dividing the amplitude envelopes of the two traces and represents the diagonal elements of the scaling operator.
+Then, the scaling weight is calculated by smoothly dividing the amplitude envelopes of the two traces to find the diagonal elements of the scaling operator.
 %The result of 
 
 \section{Shifting}

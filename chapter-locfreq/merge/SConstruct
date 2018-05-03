@@ -1,15 +1,18 @@
 from rsf.proj import *
 from radius import radius
 
+# must have 'legacy.rsf' and 'hires.rsf' initial data sets in same directory
+
 # Initial figures
 Result('legacy','grey title="Legacy"')
-Result('hires-agc','hires','agc rect1=2000 rect2=5 | grey title="High-resolution"')
+Result('hires-agc','hires',
+       'agc rect1=2000 rect2=5 | grey title="High-resolution"')
 
+# frequency content
 Flow('legacy-spec','legacy','spectra all=y')
 Result('nspectra-orig','high-spec legacy-spec',
-    '''cat axis=2 ${SOURCES[1]} | 
-       scale axis=1 | window max1=180 |
-       graph title="Normalized Spectra" label2="Amplitude" unit2=""''')
+     '''cat axis=2 ${SOURCES[1]} | scale axis=1 | window max1=180 |
+        graph title="Normalized Spectra" label2="Amplitude" unit2=""''')
 
 # Balance local frequency
 flol=40

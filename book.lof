@@ -1,6 +1,6 @@
 \addvspace {10pt}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {2.1}{\ignorespaces A seismic image (a) and its local frequency content (b). Because its local frequency varies both spatially and temporally, we can say its frequency content is {\it non-stationary}.}}{5}{figure.2.1}
+\contentsline {figure}{\numberline {2.1}{\ignorespaces A seismic image (a) and its local frequency content (b). Because its local frequency varies both spatially and temporally, we can say its frequency content is smoothly {\it non-stationary}.}}{5}{figure.2.1}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{5}{figure.2.1}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{5}{figure.2.1}
 \contentsline {figure}{\numberline {2.2}{\ignorespaces (a) Two traces that need to be matched---we will match the red trace to the black trace. (b) Red trace after filtering. (c) Red trace from (b) after scaling. (d) The final result: red trace from (c) after shifting, which now better matches with the black trace. The amount and order in which these operations is applied affects the final result (Figure \ref {fig:bef,aft}).}}{7}{figure.2.2}

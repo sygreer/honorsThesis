@@ -1,5 +1,7 @@
 \title{Conclusions}
 \author{Sarah Yvonne Greer}
+\label{ch:chapter-conclusion}
+
 \maketitle
 
 \subsection{Summary}
@@ -47,8 +49,11 @@ The package is available at \url{http://www.ahay.org/}.
 The reproducible document for the results in this thesis, including code, is available at \url{http://www.sygreer.com/research/honorsThesis}.
 However, some of the data used in this thesis are proprietary, so those results may not directly be reproducible.
 
-The scripts and programs used to produce the examples in this thesis are below.
+For brevity in this thesis, code is only included for one example of the main frequency balancing algorithm presented in chapter 3.
+The code for the rest of the examples in this thesis are available online at the URL above.
+%The code for the rest of the examples in this thesis is available online at the URL above.
 
+%The scripts and programs used to produce the examples in this thesis are below.
 
 \definecolor{mygreen}{rgb}{0,0.5,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -80,7 +85,7 @@ The scripts and programs used to produce the examples in this thesis are below.
   stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
   stringstyle=\color{c2},     % string literal style
   tabsize=2,	                   % sets default tabsize to 2 spaces
-  keywords=[1]{from,for,if,in,import},
+  keywords=[1]{from,for,if,in,import,def},
   keywords=[2]{Flow,Fetch},
   keywords=[3]{Result,Plot},
   keywordstyle={\color{c0}},
@@ -97,19 +102,18 @@ The scripts and programs used to produce the examples in this thesis are below.
 \hline
         \textbf{Figures} & \textbf{Directory} & \textbf{Listings} \\ \hline 
         \ref{fig:legacy,low-freq} & chapter-locfreq/merge/ & \ref{lst:lms}, \ref{lst:lmrp}, \ref{lst:lmrc}\\ 
-        \ref{fig:one0,one1,one2,one3}, \ref{fig:bef,aft} & chapter-background/dmExample/ & \ref{lst:dm} \\ 
-        \ref{fig:legacy,hires}, \ref{fig:nspectra,hires-smooth-spec}, \ref{fig:rect}, \ref{fig:freqdif,freqdif-filt}           & chapter-merge/apache/ & \ref{lst:mas} \\ 
+        \ref{fig:one0,one1,one2,one3}, \ref{fig:bef,aft} & chapter-background/dmExample/ & ---\\%\ref{lst:dm} \\ 
+        \ref{fig:legacy,hires}, \ref{fig:nspectra,hires-smooth-spec}, \ref{fig:rect}, \ref{fig:freqdif,freqdif-filt}           & chapter-merge/apache/ & ---\\%\ref{lst:mas} \\ 
         \ref{fig:legacy,hires-agc}, \ref{fig:rect5}, \ref{fig:nspectra-orig,high-smooth-spec5}, \ref{fig:freqdif,freqdif-filt5}          & chapter-locfreq/merge/ &   \ref{lst:lms}, \ref{lst:lmrp}, \ref{lst:lmrc}\\ 
-        \ref{fig:pp,ss}, \ref{fig:before,after}         & chapter-locfreq/vecta/&  \ref{lst:lvs}, \ref{lst:lvn}, \ref{lst:lvrp}, \ref{lst:lvrc}\\ 
-        \ref{fig:all,scalar} & chapter-locfreq/convergence/&  \ref{lst:conv}\\ 
-        \ref{fig:legacy,hires,merge2-reverse}, \ref{fig:diff0,diff1}, \ref{fig:hweight,lweight-reverse}, \ref{fig:nspectra22-reverse}           & chapter-merge/apache/ & \ref{lst:mas} \\ 
-        \ref{fig:window1,window2}, \ref{fig:nspectra2} & chapter-merge/pcable/ & \ref{lst:mps} \\ 
-        \ref{fig:legacy4,hires4,merge3}  & chapter-merge/pcable2/ & \ref{lst:mp2s}, \ref{lst:mp2rp}, \ref{lst:mp2rc}\\ 
-        \ref{fig:mod,vel-migration}, \ref{fig:image0,image1}, \ref{fig:a0,rect10b}, \ref{fig:migdec-shap}, \ref{fig:image0-w3,migdec-w3,mod-w3} & chapter-merge/mighes/ & \ref{lst:hss}, \ref{lst:hsrp}, \ref{lst:hsrc}\\ 
-        \ref{fig:tf}, & chapter-merge/triop/ & \ref{lst:triop}, \ref{lst:trfu} \ref{lst:solve}\\ 
+        \ref{fig:pp,ss}, \ref{fig:before,after}         & chapter-locfreq/vecta/&  --- \\%\ref{lst:lvs}, \ref{lst:lvn}, \ref{lst:lvrp}, \ref{lst:lvrc}\\ 
+        \ref{fig:all,scalar} & chapter-locfreq/convergence/&  --- \\%\ref{lst:conv}\\ 
+        \ref{fig:legacy,hires,merge2-reverse}, \ref{fig:diff0,diff1}, \ref{fig:hweight,lweight-reverse}, \ref{fig:nspectra22-reverse}           & chapter-merge/apache/ & --- \\% \ref{lst:mas} \\ 
+        \ref{fig:window1,window2}, \ref{fig:nspectra2} & chapter-merge/pcable/ & --- \\%\ref{lst:mps} \\ 
+        \ref{fig:legacy4,hires4,merge3}  & chapter-merge/pcable2/ &  --- \\%\ref{lst:mp2s}, \ref{lst:mp2rp}, \ref{lst:mp2rc}\\ 
+        \ref{fig:mod,vel-migration}, \ref{fig:image0,image1}, \ref{fig:a0,rect10b}, \ref{fig:migdec-shap}, \ref{fig:image0-w3,migdec-w3,mod-w3} & chapter-merge/mighes/ & --- \\%\ref{lst:hss}, \ref{lst:hsrp}, \ref{lst:hsrc}\\ 
+        \ref{fig:tf}, & chapter-merge/triop/ & --- \\%\ref{lst:triop}, \ref{lst:trfu} \ref{lst:solve}\\ 
 \end{tabular}
 \end{table}
-For brevity in this thesis, code is only included for one example of the main frequency balancing algorithm presented in chapter 3.
 
 %\subsection{Chapter 2}
 %
