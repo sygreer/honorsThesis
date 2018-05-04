@@ -123,7 +123,7 @@
 
         \subsection{Iterative method for calculating the smoothing radius}
         \inputdir{merge}
-        The theoretical smoothing radius works in some situations, like in the first example of the next chapter, but it does not work in situations where litte overlap is present in frequency content between data sets, like in the second example of the next chapter.
+        The theoretical smoothing radius works in some situations, like in the first example of Chapter \ref{ch:chapter-merge}, but it does not work in situations where litte overlap is present in frequency content between data sets, like in the second example of Chapter \ref{ch:chapter-merge}.
         In this case, we use an iterative method to find what the smoothing radius should be that is based on the physical understanding of what smoothing is doing.
 
         The goal of this method is to find the temporally and spatially variable smoothing radius, $\mathbf{R}$, that minimizes the difference in local frequencies between the two data sets. 
@@ -183,7 +183,7 @@
         
         After the frequency content is matched, the optimal time shift is found to align signal content between the legacy and high-resolution images. We then apply this time shift to the original high-resolution image---the frequency content is only degraded for the purpose of finding the time shift. 
         
-        An application of aligning the high-resolution and legacy images is discussed in the next chapter.
+        An application of aligning the high-resolution and legacy images is discussed in Chapter \ref{ch:chapter-merge}.
 
         \multiplot{2}{nspectra-orig,high-smooth-spec5}{width=0.47\columnwidth}{Spectral content of the legacy (red) and high-resolution (blue) images before (a) and after (b) spectral balancing using the theoretical method.}
 
@@ -246,7 +246,7 @@
         However, the method we propose in this chapter is more straightforward and significantly less computationally expensive.
 
         So far, this algorithm and its modification have been discussed when the smoothing radius is only calculated along one dimension. 
-        However, Chapter 5 provides an application where the smoothing radius is calculated in multiple directions.
+        However, Chapter \ref{ch:chapter-mighes} provides an application where the smoothing radius is calculated in multiple directions.
 
         \multiplot{2}{before,after}{width=0.65\columnwidth}{Interleaved PP and warped SS traces before (a) and after (b) frequency balancing and residual registration. After registration, the signal content between the two initial images is more aligned; for example, the reflections around 0.3 and 0.6 s. This indicates a successful registration.} 
         
@@ -275,5 +275,5 @@
         We applied these methods to examples of matching seismic images of differing resolution and for multicomponent image registration.
 
 
-\section{Acknowledgements}
+\section{Acknowledgments}
         We thank the sponsors of the Texas Consortium for Computational Seismology (TCCS) for their financial support.

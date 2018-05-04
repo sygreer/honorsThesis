@@ -27,7 +27,7 @@
     Previously, this has been done by migration deconvolution \cite[]{poststack,prestack}, approximating the diagonal of $\mathbf{H}^{-1}$ to account for amplitude effects \cite[]{amp,diagamp}, and by finding and applying a bank of non-stationary matching filters \cite[]{imop,rtmmf} or deblurring filters \cite[]{debfilt} to a conventionally migrated image.
     This traditionally is done using a sliding window approach, where windowed regions and partial overlap regions are specified, and different matching filters are specified in each region \cite[]{seiinv}.
 
-    In this paper, we take a different approach. 
+    In this thesis, we take a different approach. 
     We note that the two primary differences between least squares migrated images and conventional migrated images are amplitude and frequency variations \cite[]{Hou2015, Hou2016}. 
     Here, we treat this as a data matching problem between two conventionally migrated images, and find separate operations to account for both amplitude and frequency variations.
 
@@ -122,7 +122,7 @@ Conventional migration is less computationally expensive:
     To do this, we propose using non-stationary triangle smoothing. 
     This approach involves finding and applying a non-stationary smoothing operator, which is the number of samples, in both dimensions, that $\mathbf{m}_0$ will be averaged over in a triangle weight, to balance the local frequency content with $\mathbf{m}_1$. 
     
-    We find the smoothing radius iteratively using the method of \cite{locfreq} from chapter 3, with a modification that allows the smoothing radius to be calculated in both spatial directions. 
+    We find the smoothing radius iteratively using the method of \cite{locfreq} from Chapter \ref{ch:chapter-locfreq}, with a modification that allows the smoothing radius to be calculated in both spatial directions. 
 Essentially, this is found by choosing an initial guess of a smoothing radius, $\mathbf{R}^{(0)}$, and updating it iteratively such that 
     \begin{equation}
         \label{eq:it}
@@ -132,7 +132,7 @@ Essentially, this is found by choosing an initial guess of a smoothing radius, $
     After a small number of iterations, the smoothing operator is found that, once applied to $\mathbf{m}_0$, balances local frequency content with $\mathbf{m}_1$.
 
     For this particular application using depth migration, this operator should technically be specified to balance {\em wavenumber} instead of {\em frequency}.
-    However, it is kept as frequency to keep consistent terminology with the algorithm developed in chapter 3.
+    However, it is kept as frequency to keep consistent terminology with the algorithm developed in Chapter \ref{ch:chapter-locfreq}.
 
     \multiplot{2}{a0,rect10b}{width=0.85\columnwidth}{The forward amplitude balancing weight, $\mathbf{A}$ (a) and the smoothing radius (b), which represents the number of samples in both dimensions that $\mathbf{m}_0$ must be smoothed over in a triangle weight to balance the local frequency content with $\mathbf{m}_1$. This represents the forward smoothing operation, $\mathbf{S}$.}
 
@@ -204,7 +204,7 @@ We use reverse-time migration (RTM) as our migration operator.
 
 \section{Conclusions}
     Least-squares migration can produce an accurate migrated image, but it is more computationally expensive than conventional migration.
-    In this paper, we apply an approximate inverse Hessian operator to a conventional migrated image to approximate the least-squares migrated image.
+    In this chapter, we apply an approximate inverse Hessian operator to a conventional migrated image to approximate the least-squares migrated image.
     Because the primary differences between least-squares migration and conventional migration amount to amplitude and frequency variations, we approximate the forward Hessian by calculating frequency and amplitude matching operators.
     The amplitude matching operator is found by calculating the amplitude envelopes of migrated and remigrated images and smoothly dividing them, and the frequency matching operator is found using an iterative algorithm and non-stationary smoothing.
     The Hessian is approximated by a combination of these two operators to ensure symmetry.
@@ -216,6 +216,6 @@ We use reverse-time migration (RTM) as our migration operator.
 
 \inputdir{sigmoid}
 
-\section{Acknowledgements}
+\section{Acknowledgments}
     We thank the sponsors of the Texas Consortium for Computational Seismology (TCCS) for their financial support.
-    The examples in this paper can be reproduced using the Madagascar open-source software package \cite[]{madagascar}.
+    The examples in this chapter can be reproduced using the Madagascar open-source software package \cite[]{madagascar}.

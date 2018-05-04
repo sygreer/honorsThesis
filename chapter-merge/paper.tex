@@ -70,7 +70,7 @@
     A more effective method, which accounts for temporally and spatially variable frequency content that is present in most seismic data, is to apply a non-stationary filter using frequency information from both images. 
     To accomplish this, we use a simple triangle smoothing operator with an adjustable radius. 
     Here, the radius at each point is the amount of time, in seconds, that that specific data point gets averaged over in a triangle weight in the temporal direction.
-    In this example, we find the radius of smoothing using the theoretical approach described in the previous chapter, so 
+    In this example, we find the radius of smoothing using the theoretical approach described in Chapter \ref{ch:chapter-locfreq}, so 
     \begin{equation}
         \label{eq:rad}
         \Delta t \approx \frac{1}{2\pi}\sqrt{12\left(\frac{1}{f_{l}^{2}}-\frac{1}{f_{h}^{2}}\right)}\;.
@@ -228,7 +228,7 @@
     
     
     We first apply a low-cut filter to the legacy data to remove the low frequency information that is simply not present in the high-resolution image. 
-    Next, we adjust the non-stationary smoothing radius using the simple iterative algorithm \cite[]{locfreq} that was described in the previous chapter. 
+    Next, we adjust the non-stationary smoothing radius using the simple iterative algorithm \cite[]{locfreq} that was described in Chapter \ref{ch:chapter-locfreq}. 
     
 %    The main premise behind the algorithm comes from the fact that, in general, the greater the smoothing radius at a specified point, the more high frequencies are attenuated by smoothing.
 %    We choose an initial guess of the non-stationary smoothing radius before applying corrections based on two primary assumptions:
