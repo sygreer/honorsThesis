@@ -55,7 +55,7 @@ We define the {\em radius} of this operator as the number of samples in a specif
 We allow the radius to vary in all dimensions to account for the potential non-stationary frequency variations present in the data.
 This is a linear operation---if we represent the filtering operation by a matrix applied to the trace represented by a vector, the matrix would be diagonally banded, where the width of the band at a particular index is related to the size of the smoothing radius at that point.
 
-Chapter 3 is dedicated to the discussion of how to find this frequency balancing operator.
+Chapter \ref{ch:chapter-locfreq} is dedicated to the discussion of how to find this frequency balancing operator.
 Figure \ref{fig:one1} shows the two traces after balancing the local frequency content of the red trace to match the black trace.
 
 
@@ -69,12 +69,12 @@ Then, the scaling weight is calculated by smoothly dividing the amplitude envelo
 %The result of 
 
 \section{Shifting}
-If two events are slightly misaligned in time, finding the transformation that correctly aligns these events is referred to as {\em shifting}.
+If two events are misaligned in time, finding the transformation that correctly aligns these events is referred to as {\em shifting}.
 Dynamic time warping is a common algorithm used for the alignment of events of two time series, both for geophysical and other applications, as diverse as speech recognition and finance \cite[]{herrera2012,hale2013,dtw,finance}.
 
 In this thesis, I calculate the shifting operator by finding the time shifts that maximize local similarity between the two data sets.
 Local similarity extends the concept of local seismic attributes to global correlation coefficients and is effective for measuring the match of seismic events in a local region of samples \cite[]{attr}.
-Unlike filtering and scaling, shifting is a non-linear transformation.
+%Unlike filtering and scaling, shifting is a non-linear transformation.
 %The time shift calculated is 
 
 In certain situations, these data must be correctly aligned in space instead of time; for example, in a depth-migrated image.
@@ -82,7 +82,7 @@ In these cases, {\em time} shift is a misnomer.
 However, because the data we are typically dealing with are time series, the shifting operation that we find and apply is considered a function of time.
 
 The result after finding and applying the time shift to the red trace to match it to the black trace is in Figure \ref{fig:one3}.
-This shifting operation is discussed in more detail in chapters 3 and 4.
+This shifting operation is discussed in more detail in Chapters \ref{ch:chapter-locfreq} and \ref{ch:chapter-merge}..
 
 
 \section{Representation of operators}
@@ -100,10 +100,10 @@ too precise of an amplitude balancing operation could inadvertently balance ampl
 
 The order and amount of these operators affects the final result.
 After correcting for frequency variations, amplitude variations, and time shifts, additional corrections can be applied to further refine the match if necessary.
-In some cases, multiple rounds of applying these operators and in different orders may be beneficial for the best match.
 These three operators are noncommutative, so the order in which they are applied matters.
 Applying filtering before scaling produces a different result from applying scaling before filtering. 
 An illustration of this property is shown in Figure \ref{fig:bef,aft}.
+In some cases, multiple rounds of applying these operators and in different orders may be beneficial for the best match.
 
 \multiplot{2}{bef,aft}{width=1.0\columnwidth}{(a) A lower-resolution seismic trace (black) and a higher-resolution seismic trace (red) acquired over the same area. (b) Data matching operations are noncommutative---the order in which they are applied matters. When matching the red trace to the black trace, the green trace had first smoothing, then amplitude balancing, and finally shifting; the yellow trace had first amplitude balancing, then smoothing, and finally shifting. The operation order matters and affects the final result.}
 
@@ -120,6 +120,6 @@ An illustration of this property is shown in Figure \ref{fig:bef,aft}.
 \end{table}
 
 A summary of the three data matching operations is shown in Table \ref{op}.
-Both scaling and filtering are linear operations, whereas shifting is generally a non-linear operation.
-Additionally, as scaling is to weighting in the time domain, filtering is to weighting in the Fourier domain.
-The next chapter discusses a few methods and examples of filtering, or frequency balancing, between two data sets.
+%Both scaling and filtering are linear operations, whereas shifting is generally a non-linear operation.
+In the stationary case, if scaling is weighting in the time domain, filtering is weighting in the Fourier domain.
+Chapter \ref{ch:chapter-locfreq} discusses a few methods and examples of filtering, or frequency balancing, between two data sets.

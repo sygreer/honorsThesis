@@ -4,35 +4,58 @@
 
 \maketitle
 
-%\subsection{Summary}
+%\section{Summary}
 
 In this thesis, I discussed several methods and applications of data matching in seismic data analysis.
-Chapter \ref{ch:chapter-background} focuses on introducing the three data matching operators that are used in this thesis---shifting, scaling, and filtering.
-Chapter \ref{ch:chapter-locfreq} introduces different methods of frequency balancing using non-stationary smoothing. 
-The first method to find the non-stationary smoothing {\em radius}, or number of samples each data point is averaged over with a triangle weight, took a theoretical approach based off of the assumption that the data we observe can be modeled by a summation of Ricker wavelets.
-This method worked well in certain situations, but was not robust enough to work for any given data set.
-In the second method, I introduced an iterative algorithm to find the smoothing radius, and this method converges quickly and works well in several presented situations. 
-Finally, a modification to this algorithm was shown and allows smoothing for more complex data sets.
+Chapter \ref{ch:chapter-background} introduced on introducing the three data matching operators that are used in this thesis---shifting, scaling, and filtering.
+Chapter \ref{ch:chapter-locfreq} introduced different methods of frequency balancing using non-stationary smoothing. 
+The first method to find the non-stationary smoothing {\em radius}, or number of samples each data point is averaged over with a triangle weight, took a theoretical approach based on the assumption that the data we observe can be represented by a superposition of Ricker wavelets.
+This method worked well in certain situations, but was not robust enough to work for all of the given data sets.
+In the second method, I introduced an iterative algorithm to find the smoothing radius. 
+In my experiments, this method converges quickly and works well in several presented situations. 
+Finally, a modification to this algorithm was shown that allows adaptive smoothing for more complex data sets.
 
-This chapter also discusses two applications of these algorithms---the frequency balancing algorithm was demonstrated on an application of matching high-resolution and legacy seismic images, and the modified algorithm was demonstrated on an application of multicomponent seismic image registration.
+This chapter also discussed two applications of these algorithms.
+The frequency balancing algorithm was demonstrated on an application to matching high-resolution and legacy seismic images, and the modified algorithm was demonstrated on an application to multicomponent seismic image registration.
 
-Chapter \ref{ch:chapter-merge} goes into more detail of the application of matching and merging high-resolution and legacy seismic images.
+Chapter \ref{ch:chapter-merge} went into more detail of the application of matching and merging high-resolution and legacy seismic images.
 This example takes two seismic volumes, acquired over the same area but using different technologies, and first matches them before merging them together to produce an optimized third image.
-First, the method is demonstrated on a 2D line from the Gulf of Mexico.
-Then, the method is applied to a 3D seismic volume from a different part of the Gulf of Mexico.
+First, I demonstrated the method on a 2D line from the Gulf of Mexico.
+Then, I applied the method to a 3D seismic volume from a different part of the Gulf of Mexico.
 
 Chapter \ref{ch:chapter-mighes} discusses another application of improving migration resolution by approximating the least-squares Hessian using non-stationary data matching operations.
-An approximation to the least-squares Hessian can be calculated by solving a data matching problem between two conventionally migrated images, and the Hessian can be represented by the combination of amplitude and frequency balancing operations.
-An example is applied to a 2D synthetic Sigsbee data set.
+I showed that an approximation to the least-squares Hessian can be calculated by solving a data matching problem between two conventionally migrated images, and the Hessian can be represented by the combination of amplitude and frequency balancing operations.
+I applied the proposed approach to a 2D synthetic Sigsbee data set, a traditional benchmark for imaging algorithms.
 
-\subsection{Future work}
+\section{Future work}
 In the future, the work presented in Chapter \ref{ch:chapter-mighes} should be extended to involve real data and 3D examples. 
-It also could benefit by comparing the results of the proposed approach taken in the chapter to other previous approaches presented to approximate the least-squares Hessian \cite[]{migdec,lsamp,siklsm,pwlsrtm,diagamp,debfilt,prestack,poststack}, to see how it compares in different situations.
+It could also benefit from comparing the results of the proposed approach to previous approaches presented to approximate the least-squares Hessian \cite[]{migdec,poststack,prestack,diagamp,debfilt,lsamp,pwlsrtm,siklsm}, to see how it compares in different situations.
+%It could also benefit from comparing the results of the proposed approach to previous approaches presented to approximate the least-squares Hessian \cite[]{migdec,lsamp,siklsm,pwlsrtm,diagamp,debfilt,prestack,poststack}, to see how it compares in different situations.
 
 Another extension of this data matching procedure may be to incorporate
 %Another component to data matching may incorporate 
 the phase of the signal to be matched. 
-Negligible improvements were made when trying to incorporate phase corrections into the high-resolution and legacy data matching problem of Chapter \ref{ch:chapter-merge}, but other data matching problems could benefit from these corrections.
+Negligible improvements were made when trying to incorporate phase corrections into the high-resolution and legacy data matching problem of Chapter \ref{ch:chapter-merge}. 
+However, other data matching problems could benefit from these corrections.
+
+The newly developed field of deep learning may also benefit from including these data matching techniques in the parameterization, as specifically tailoring the neural networks to work with geophysical data in this manner may produce better results.
+%Deep learning.
+%So fundamentally deep learning is about matching
+%so you have an input and an output and you're trying to find an operator that matches 
+%and so just the building blocks are different but possibly with the kind of operators that you develop here, shifting, scaling, and filtering, one could build a different kind of network that works with deep learning
+%so there's actually a connection
+%The example that we saw for image processing where with convolutional neural networks they are the building block with convolution and some form of non-linear mapping
+%and then you add them together to create layers
+%but actually seismic data in particular may make more sense to build them out of shifting and scaling
+%so I think it would be good to insert your mapping total (?)
+
+%Fundamentally deep learning is about matching, so you have an input and an output and you're trying to find an operator that matches. 
+%So just the building blocks are different, but possibly with the kind of operators that are developed here, shifting, scaling, and filtering, one could build a different kind of network that works with deep learning.
+%So there's actually a connection.
+%The example that we saw for image processing where with convolutional neural networks are the building blocks with convolution and some form of non-linear mapping, and then you add them together to create layers 
+%But actually seismic data in particular may make more sense to build them out of shifting and scaling
+
+
 
 Several applications of data matching were discussed in this thesis. 
 However, many applications remain unaddressed from a data matching standpoint. 
@@ -41,11 +64,11 @@ Problems such as seismic and well-log tying, deconvolution, automatic gain contr
 \appendix
 \section{Code}
 %Below is the code for the 
-The examples in this thesis were implemented with the Madagascar open-source software environment for reproducible computational experiments \cite[]{madagascar}.
+The examples in this thesis were implemented using the Madagascar open-source software environment for reproducible computational experiments \cite[]{madagascar}.
 The package is available at \url{http://www.ahay.org/}.
 
 The reproducible document for the results in this thesis, including code, is available at \url{http://www.sygreer.com/research/honorsThesis}.
-However, some of the data used in this thesis are proprietary, so those results may not directly be reproducible.
+However, some of the data used in this thesis are proprietary, so those results may not be directly reproducible.
 
 For brevity in this thesis, code is only included for one example of the main frequency balancing algorithm presented in Chapter \ref{ch:chapter-locfreq}.
 The code for the rest of the examples in this thesis are available online at the URL above.
@@ -159,3 +182,4 @@ The code for the rest of the examples in this thesis are available online at the
 %\lstinputlisting[label={lst:triop},caption={chapter-mighes/triop/triOp.py}]{../chapter-mighes/triop/triOp.py}
 %\lstinputlisting[label={lst:trfu},caption={chapter-mighes/triop/trfu.py}]{../chapter-mighes/triop/trfu.py}
 %\lstinputlisting[label={lst:solve},caption={chapter-mighes/triop/solve.py}]{../chapter-mighes/triop/solve.py}
+

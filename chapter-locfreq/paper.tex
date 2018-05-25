@@ -123,7 +123,7 @@
 
         \subsection{Iterative method for calculating the smoothing radius}
         \inputdir{merge}
-        The theoretical smoothing radius works in some situations, like in the first example of Chapter \ref{ch:chapter-merge}, but it does not work in situations where litte overlap is present in frequency content between data sets, like in the second example of Chapter \ref{ch:chapter-merge}.
+        The theoretical smoothing radius works in some situations, like in the first example of Chapter \ref{ch:chapter-merge}, but it does not work in situations where little overlap is present in frequency content between data sets, like in the second example of Chapter \ref{ch:chapter-merge}.
         In this case, we use an iterative method to find what the smoothing radius should be that is based on the physical understanding of what smoothing is doing.
 
         The goal of this method is to find the temporally and spatially variable smoothing radius, $\mathbf{R}$, that minimizes the difference in local frequencies between the two data sets. 
@@ -156,7 +156,7 @@
         When equation (\ref{eq:residual}) is zero, the correct radius has been found and no further corrections are made. 
         Thus, it is justifiable to set the search direction from equation (\ref{eq:alg}) equal to the residual.
         
-        Using the assumptions, we can choose an intial guess for the smoothing radius and continually adjust the smoothing radius until we  achieve the desired result of balancing the local frequency content between the two data sets. 
+        Using the assumptions, we can choose an initial guess for the smoothing radius and continually adjust the smoothing radius until we  achieve the desired result of balancing the local frequency content between the two data sets. 
         In practice, this method produces an acceptable solution in approximately 5 iterations and exhibits sublinear convergence. After smoothing the higher frequency data with the estimated radius, we use the lower frequency and smoothed higher frequency data to estimate time shifts and align the two data sets.
         
         This method is applicable to workflows that require matching data with different frequency content. 
