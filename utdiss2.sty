@@ -1,3 +1,6 @@
+% MODIFIED FOR B.S. HONORS THESIS
+% NOTE: GRADUATION DATE HARD-CODED IN THIS FILE (line 630)
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                utdiss2.sty-05.sty (August 2002) 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -624,10 +627,13 @@
 \def\ti@tle{\bf Title Required !!!}
 %\def\TI@TLE{\bf \uppercase{Title Required !!!}}
 
-\def\graduation@month{\ifcase\month\or
-    May\or May\or May\or May\or May\or August\or August\or
-    August\or December\or December\or December\or December\fi}
-\def\graduation@year{\number\year}
+% HERE IS WHERE THE DATE IS HARD CODED IN:
+%\def\graduation@month{\ifcase\month\or
+%    May\or May\or May\or May\or May\or August\or August\or
+%    August\or December\or December\or December\or December\fi}
+%\def\graduation@year{\number\year}
+\def\graduation@month{May}
+\def\graduation@year{\number 2018}
 
 \def\add@ress{\bf Permanent Address Required !!!}
 \def\type@ist{the author}
@@ -900,6 +906,7 @@
     \vfill
     \centerline{THE UNIVERSITY OF TEXAS AT AUSTIN}
     \centerline{\graduation@month\ \graduation@year}
+    %\centerline{May\ 2018}
     \clearpage
     \setcounter{regular@short}{1}}
 

@@ -1,20 +1,20 @@
 from rsf.proj import *
 
-def radius2(high, low,               # initial high-resolution and legacy images
-            niter,                   # number of corrections
-            c,                       # step length for radius corrections. Can 
-                                     # be type int or float for constant c 
-                                     # or type array for changing c.
-            bias=-15, clip=30,       # bias and clip for display
-            rect1=40, rect2=80,      # radius for local frequency calculation
-            maxrad=1000,             # maximum allowed radius
-            theor=True,              # use theoretical smoothing radius
-            scale=9,                 # scale for theoretical smoothing radius
-            initial=10,              # initial value for contant smoothing radius 
-            minval=0, maxval=25,     # minval and maxval for freqdif-filt display
-            titlehigh="Hires",       # high title
-            titlelow="Legacy",       # low title
-            it=0):                   # correction number (from newarp.py)
+def radius2(high, low,              # initial high-resolution and legacy images
+            niter,                  # number of corrections
+            c,                      # step length for radius corrections. Can 
+                                    # be type int or float for constant c 
+                                    # or type array for changing c.
+            bias=-15, clip=30,      # bias and clip for display
+            rect1=40, rect2=80,     # radius for local frequency calculation
+            maxrad=1000,            # maximum allowed radius
+            theor=True,             # use theoretical smoothing radius
+            scale=9,                # scale for theoretical smoothing radius
+            initial=10,             # initial value for contant smoothing radius 
+            minval=0, maxval=25,    # minval and maxval for freqdif-filt display
+            titlehigh="Hires",      # high title
+            titlelow="Legacy",      # low title
+            it=0):                  # correction number (from newarp.py)
 
     if type(c) is float or type(c) is int:
         c = [c]*niter
@@ -36,8 +36,8 @@ def radius2(high, low,               # initial high-resolution and legacy images
                   clip=%d bias=%d minval=%d maxval=%d''' %(num,22,-15,-15,8) 
 
     specplot = '''cat axis=2 ${SOURCES[1]} | 
-                  scale axis=1 | window max1=180 |
-                  graph title="Normalized Spectra" label2="Amplitude" unit2=""'''
+               scale axis=1 | window max1=180 |
+               graph title="Normalized Spectra" label2="Amplitude" unit2=""'''
 
     def rectplot(name):
         return '''grey color=j mean=y title="%s" scalebar=y barlabel=Radius 
