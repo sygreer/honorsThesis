@@ -1,0 +1,121 @@
+from rsf.proj import *
+from radius import radius
+
+maxWin=80
+pclip=99
+rad=5
+
+refl = "ref-true.rsf"
+image0 = "image0.rsf"
+image1 = "image1.rsf"
+Result('mod','ref-true','grey title="Reflectivity model" screenratio=0.6')
+Flow('env0','image0','envelope')
+Flow('env1','image1','envelope')
+Result('env0','grey title=Model scalebar=y color=j')
+Result('env1','grey title=Model scalebar=y color=j')
+Result('image1','grey screenratio=0.6 bias=0 clip=0.0004 title="Second migration"')
+Result('image0','grey screenratio=0.6 title="First migration"')
+
+Result('vel-migration','grey title=Model scalebar=y    color=j screenratio=0.5 bias=3 clip=2 barlabel=Velocity barunit="km/s" title="Migration velocity model"')
+Result('vel-stratigraphy','grey title=Model scalebar=y color=j screenratio=0.5 wanttitle=n')
+
+Flow('a0','env0 env1','divn den=${SOURCES[1]} niter=500 rect1=3 rect2=5')
+
+Result('a0','grey title="Amplitude operator" color=j scalebar=y barlabel="Weight" barunit= screenratio=0.6')
+Result('rect10b','rect10','grey color=j mean=y title="Frequency operator" scalebar=y barlabel=Radius barunit=samples screenratio=0.6')
+
+
+# matching (sfdivn)
+Flow('a0image1','image1 a0','math w=${SOURCES[1]} output="input*w"')
+Result('a0image1','grey title=a0image1')
+
+Flow('a0image0','image0 a0','math w=${SOURCES[1]} output="input/w"')
+Result('a0image0','grey title=a0image1')
+
+# frequency balancing 
+niter=10
+radius('image0','a0image1', niter, 0.20, bias=-3, clip=15, rect1=rad, rect2=rad, 
+       maxval=20, minval=-7, theor=False, initial=1, 
+       titlehigh="First Migration", titlelow="Second Migration")
+
+Flow('env0b','high-smooth%i'%niter,'envelope')
+Flow('env1b','image1','envelope')
+
+Flow('a1','env0b env1b','divn den=${SOURCES[1]} niter=500 rect1=3 rect2=5')
+
+
+Flow('mod0','image0 a0','math w=${SOURCES[1]} output="input*(abs(w))^(0.1)"')
+Result('mod%i'%(0),'grey title="mod0"')
+
+def forward(mod,dat):
+    Flow(dat,'%s rect%d'%(mod,niter),'nsmooth rect1=${SOURCES[1]}')
+
+def backward(dat,mod):
+    Flow(mod,'%s rect%d'%(dat,niter),'nsmooth rect1=${SOURCES[1]}')
+
+# Shaping regularization
+# mod_{n+1} = S[B[d] + m_{n} - BF[m_{n}]]
+n=10
+
+prog=Program('freqfilt.c') 
+Flow('add-spec','image0-spec image1-spec','math kir2=${SOURCES[1]} output="2*input-kir2"')
+Flow('filt','add-spec','scale axis=1 | mask min=0.05 | dd type=float | smooth rect1=10')
+Result('filt','graph')
+Result('add-spec','graph')
+for it in range(n):
+    mod = 'mod%d' % it
+    dat = 'dat%d' % it
+    forward(mod,dat)
+    bak = 'bak%d' % it
+    backward(dat,bak)
+    new = 'mod%d' % (it+1)
+    Flow(new,[mod,'mod0',bak],'''
+        add scale=1,1,-1 ${SOURCES[1:3]} |
+        bandpass fhi=32.8084''')
+
+
+Flow('modb0','image0','cp')
+for it in range(n):
+    mod = 'modb%d' % it
+    dat = 'datb%d' % it
+    forward(mod,dat)
+    bak = 'bakb%d' % it
+    backward(dat,bak)
+    new = 'modb%d' % (it+1)
+    Flow(new,[mod,'modb0',bak],'''
+        add scale=1,1,-1 ${SOURCES[1:3]} |
+        bandpass fhi=32.8084''')
+Result('modb%i'%(n-1),'grey title="Corrected migrated image"')
+
+
+Flow('migdec-shap','mod%i a0'%(n-1),'math w=${SOURCES[1]} output="input*(abs(w))^(0.1)"')
+
+Result('migdec-shap','grey title="Corrected migration" screenratio=0.6')
+Result('mod%i'%(n-1),'grey title="Corrected migrated image"')
+
+################################################################################
+Result('mod-w1','ref-true',      'window min1=2 max1=3 min2=10 max2=16 | grey title=model')
+Result('migdec-w1','migdec-shap','window min1=2 max1=3 min2=10 max2=16 | grey title=migdec')
+Result('image0-w1','image0',     'window min1=2 max1=3 min2=10 max2=16 | grey title=image0')
+
+Result('mod-w2','ref-true',      'window min1=2 max1=2.5 min2=22 max2=26 | grey screenratio=0.5 screenht=7 title=Model')
+Result('migdec-w2','migdec-shap','window min1=2 max1=2.5 min2=22 max2=26 | grey screenratio=0.5 screenht=7 title="Corrected migration"')
+Result('image0-w2','image0',     'window min1=2 max1=2.5 min2=22 max2=26 | grey screenratio=0.5 screenht=7 title="Conventional migration"')
+
+Result('mod-w3','ref-true',      'window min1=2 max1=4 min2=18 max2=20 | grey screenratio=1.15 screenht=10 title=Model')
+Result('migdec-w3','migdec-shap','window min1=2 max1=4 min2=18 max2=20 | grey screenratio=1.15 screenht=10 title="Corrected migration"')
+Result('image0-w3','image0',     'window min1=2 max1=4 min2=18 max2=20 | grey screenratio=1.15 screenht=10 title="Conventional migration"')
+
+Result('mod-w4','ref-true',      'window min1=2 max1=3 min2=18 max2=20 | grey title=model')
+Result('migdec-w4','migdec-shap','window min1=2 max1=3 min2=18 max2=20 | grey title=migdec')
+Result('image0-w4','image0',     'window min1=2 max1=3 min2=18 max2=20 | grey title=image0')
+
+Result('mod-w5','ref-true',      'window min1=4 max1=8 min2=4 max2=5 | grey title=model')
+Result('migdec-w5','migdec-shap','window min1=4 max1=8 min2=4 max2=5 | grey title=migdec')
+Result('image0-w5','image0',     'window min1=4 max1=8 min2=4 max2=5 | grey title=image0')
+
+Result('mod-w6','ref-true',      'window min1=5 max1=6 min2=14 max2=15 | grey title=model')
+Result('migdec-w6','migdec-shap','window min1=5 max1=6 min2=14 max2=15 | grey title=migdec')
+Result('image0-w6','image0',     'window min1=5 max1=6 min2=14 max2=15 | grey title=image0')
+
+End()
