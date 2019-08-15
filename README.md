@@ -5,3 +5,5 @@ My undergraduate honors thesis at UT Austin
 Sarah Greer, B.S. Geological Sciences and B.S. Mathematics, UT Austin  
 Thesis advisor: Dr. Sergey Fomel  
 Commitee: Dr. Kyle Spikes & Dr. Clark Wilson  
+
+The PDF thesis document is [here](book.pdf).
